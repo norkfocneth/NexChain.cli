@@ -1,4 +1,4 @@
-"""
+﻿"""
 ChainSentinel Main CLI Application
 Entry point for typer-based CLI commands and interactive conversational chat.
 """
@@ -20,8 +20,8 @@ from sentinel.cli.commands import (
 from sentinel.cli.chat import start_chat_session
 
 app = typer.Typer(
-    name="nexsen",
-    help="NexSen — Offline Cryptocurrency Forensics & Threat Intelligence CLI",
+    name="NexChain",
+    help="NexChain — Offline Cryptocurrency Forensics & Threat Intelligence CLI",
     add_completion=False,
     invoke_without_command=True
 )
@@ -110,3 +110,4 @@ def run_cli():
 
 if __name__ == "__main__":
     run_cli()
+

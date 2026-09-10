@@ -1,4 +1,4 @@
-# 🛡️ ChainSentinel CLI — Offline Cryptocurrency Forensics & Threat Intelligence
+﻿# 🛡️ NexChain CLI — Offline Cryptocurrency Forensics & Threat Intelligence
 
 **Problem Statement ID:** `SIH26146` | **Organization:** National Technical Research Organisation (NTRO)  
 **Theme:** Blockchain & Cybersecurity | **Team:** NextGeneration  
@@ -8,7 +8,7 @@
 
 ## ⚡ Overview
 
-**ChainSentinel CLI** is an air-gapped, privacy-first cryptocurrency investigation terminal application. It allows investigators, cybercrime cells, and P2P crypto traders to investigate suspicious wallets, unmask laundering syndicates (Peeling Chains, Mixers), inspect verified fraud reports, and generate transaction link-analysis flow graphs — **completely offline without external API dependencies**.
+**NexChain CLI** is an air-gapped, privacy-first cryptocurrency investigation terminal application. It allows investigators, cybercrime cells, and P2P crypto traders to investigate suspicious wallets, unmask laundering syndicates (Peeling Chains, Mixers), inspect verified fraud reports, and generate transaction link-analysis flow graphs — **completely offline without external API dependencies**.
 
 ### Key Architectural Pillars
 1. **Deterministic Core:** The actual risk engine, graph link analysis, and threat database run on deterministic, auditable Python code (`SQLite` + `Network Topology` + `Multi-Chain Address Validators`).
@@ -23,9 +23,9 @@
 ### 1. Interactive Conversational Mode (Default)
 Launch the interactive natural language assistant:
 ```powershell
-.\chainsentinel.bat
+.\NexChain.bat
 # or
-.venv\Scripts\python.exe chainsentinel.py
+.venv\Scripts\python.exe NexChain.py
 ```
 
 #### Example Conversation:
@@ -75,21 +75,21 @@ For power users, scripting, or automated forensics:
 
 | Command | Description | Example |
 | :--- | :--- | :--- |
-| `scan <wallet>` | Comprehensive threat & risk audit of an address | `.\chainsentinel.bat scan TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x` |
-| `reports <wallet>` | Display verified community incident reports & evidence | `.\chainsentinel.bat reports TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x` |
-| `graph <wallet>` | Generate link-analysis multi-hop flow diagram | `.\chainsentinel.bat graph TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x` |
-| `flagged` | List all indexed high-risk threat entities in database | `.\chainsentinel.bat flagged` |
-| `search <query>` | Search threat database by keyword, label, or address | `.\chainsentinel.bat search Binance` |
-| `cases` | View active law enforcement investigation cases | `.\chainsentinel.bat cases` |
-| `sync` | Synchronize offline threat intelligence feeds | `.\chainsentinel.bat sync` |
-| `report <addr>` | Submit a new community scam report into local database | `.\chainsentinel.bat report TXYZ... -d "Fake SMS P2P fraud"` |
+| `scan <wallet>` | Comprehensive threat & risk audit of an address | `.\NexChain.bat scan TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x` |
+| `reports <wallet>` | Display verified community incident reports & evidence | `.\NexChain.bat reports TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x` |
+| `graph <wallet>` | Generate link-analysis multi-hop flow diagram | `.\NexChain.bat graph TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x` |
+| `flagged` | List all indexed high-risk threat entities in database | `.\NexChain.bat flagged` |
+| `search <query>` | Search threat database by keyword, label, or address | `.\NexChain.bat search Binance` |
+| `cases` | View active law enforcement investigation cases | `.\NexChain.bat cases` |
+| `sync` | Synchronize offline threat intelligence feeds | `.\NexChain.bat sync` |
+| `report <addr>` | Submit a new community scam report into local database | `.\NexChain.bat report TXYZ... -d "Fake SMS P2P fraud"` |
 
 ---
 
 ## 📂 Project Architecture
 
 ```
-chainsentinel/
+NexChain/
 ├── sentinel/
 │   ├── cli/
 │   │   ├── main.py          # Typer CLI & command registration
@@ -121,3 +121,4 @@ chainsentinel/
 ## 🔒 Security & Privacy Notice
 * **100% Air-Gapped & Offline:** All lookups are performed against local SQLite storage and local LLM processes.
 * **No Cloud Leaks:** Zero search queries or suspect addresses leave your terminal.
+

@@ -1,4 +1,4 @@
-"""
+﻿"""
 ChainSentinel Terminal UI
 Renders rich cyberpunk forensic banners, risk matrices, signals trees,
 and ASCII graph link analysis using the 'rich' library.
@@ -17,14 +17,14 @@ console = Console()
 
 def print_banner(mode: str = "LOCAL AIR-GAPPED"):
     banner_text = Text()
-    banner_text.append(" ███╗   ██╗███████╗██╗  ██╗███████╗███████╗███╗   ██╗\n", style="bold cyan")
-    banner_text.append(" ████╗  ██║██╔════╝╚██╗██╔╝██╔════╝██╔════╝████╗  ██║\n", style="bold cyan")
-    banner_text.append(" ██╔██╗ ██║█████╗   ╚███╔╝ ███████╗█████╗  ██╔██╗ ██║\n", style="bold cyan")
-    banner_text.append(" ██║╚██╗██║██╔══╝   ██╔██╗ ╚════██║██╔══╝  ██║╚██╗██║\n", style="bold cyan")
-    banner_text.append(" ██║ ╚████║███████╗██╔╝ ██╗███████║███████╗██║ ╚████║\n", style="bold cyan")
-    banner_text.append(" ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═══╝\n", style="bold cyan")
-    banner_text.append("           NEXSEN AI // THREAT FORENSICS CLI\n", style="bold white")
-    banner_text.append(f"       [Mode: 🔒 {mode}]   [SIH26146 // NTRO]\n", style="bold dim yellow")
+    banner_text.append(" ███╗   ██╗███████╗██╗  ██╗ ██████╗██╗  ██╗ █████╗ ██╗███╗   ██╗\n", style="bold cyan")
+    banner_text.append(" ████╗  ██║██╔════╝╚██╗██╔╝██╔════╝██║  ██║██╔══██╗██║████╗  ██║\n", style="bold cyan")
+    banner_text.append(" ██╔██╗ ██║█████╗   ╚███╔╝ ██║     ███████║███████║██║██╔██╗ ██║\n", style="bold cyan")
+    banner_text.append(" ██║╚██╗██║██╔══╝   ██╔██╗ ██║     ██╔══██║██╔══██║██║██║╚██╗██║\n", style="bold cyan")
+    banner_text.append(" ██║ ╚████║███████╗██╔╝ ██╗╚██████╗██║  ██║██║  ██║██║██║ ╚████║\n", style="bold cyan")
+    banner_text.append(" ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝\n", style="bold cyan")
+    banner_text.append("                  NEXCHAIN AI // THREAT FORENSICS CLI\n", style="bold white")
+    banner_text.append(f"            [Mode: 🔒 {mode}]   [SIH26146 // NTRO]\n", style="bold dim yellow")
 
     panel = Panel(
         banner_text,
@@ -56,7 +56,7 @@ def render_scan_result(result):
     r_col = risk_colors.get(result.risk_level, "white")
     s_col = status_colors.get(result.status, "yellow")
 
-    console.print("\n[bold cyan]NEXSEN FORENSIC SCAN[/bold cyan]")
+    console.print("\n[bold cyan]NEXCHAIN FORENSIC SCAN[/bold cyan]")
     console.print("[dim cyan]─────────────────────────────────────────────────────────────[/dim cyan]")
     console.print(f"[bold white]Network:[/bold white]    [bold yellow]{result.network}[/bold yellow]")
     console.print(f"[bold white]Address:[/bold white]    [bold underline bright_white]{result.address}[/bold underline bright_white]")
@@ -153,3 +153,4 @@ def render_cases_list(cases: List[Dict[str, Any]]):
             c["investigator"]
         )
     console.print(table)
+

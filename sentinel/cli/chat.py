@@ -1,4 +1,4 @@
-"""
+﻿"""
 ChainSentinel Conversational Chat Interface
 Provides multi-turn natural language forensic investigation.
 Maintains session state and dispatches intent to deterministic Python tools.
@@ -29,7 +29,7 @@ def start_chat_session():
     
     print_banner(mode=mode_str)
     
-    console.print("[bold cyan]NexSen >[/bold cyan] Hey! What do you want to investigate today?")
+    console.print("[bold cyan]NexChain >[/bold cyan] Hey! What do you want to investigate today?")
     console.print("[dim]Type in plain English/Hinglish (e.g., 'bhai ye wallet scammer toh nahi hai', 'scan TX9a8...', 'graph bana', 'exit')[/dim]\n")
 
     router = IntentRouter()
@@ -45,7 +45,7 @@ def start_chat_session():
             continue
 
         if user_input.lower() in ["exit", "quit", "q", "bye"]:
-            console.print("[bold cyan]NexSen >[/bold cyan] Stay safe! Case session terminated.\n")
+            console.print("[bold cyan]NexChain >[/bold cyan] Stay safe! Case session terminated.\n")
             break
 
         route = router.route(user_input)
@@ -55,7 +55,7 @@ def start_chat_session():
 
         # 1. Handle Missing Address
         if needs_address:
-            console.print("[bold cyan]NexSen >[/bold cyan] Sure! Send me the cryptocurrency wallet address you want to inspect.")
+            console.print("[bold cyan]NexChain >[/bold cyan] Sure! Send me the cryptocurrency wallet address you want to inspect.")
             try:
                 addr_input = Prompt.ask("[bold bright_white]Wallet Address[/bold bright_white]").strip()
             except (KeyboardInterrupt, EOFError):
@@ -67,59 +67,60 @@ def start_chat_session():
 
         # 2. Execute Intent via Deterministic Tools
         if intent == "wallet_scan":
-            console.print(f"[bold cyan]NexSen >[/bold cyan] Scanning wallet [yellow]{address}[/yellow] across local threat registry...")
+            console.print(f"[bold cyan]NexChain >[/bold cyan] Scanning wallet [yellow]{address}[/yellow] across local threat registry...")
             cmd_scan(address)
             
             # Conversational advice summary
             res = scan_wallet(address)
             if res.risk_level in ["CRITICAL", "HIGH"]:
-                console.print(f"[bold red]NexSen >[/bold red] This wallet has previously been flagged by the community for {res.category}. [bold red]I strongly advise against sending any funds to this address.[/bold red]")
+                console.print(f"[bold red]NexChain >[/bold red] This wallet has previously been flagged by the community for {res.category}. [bold red]I strongly advise against sending any funds to this address.[/bold red]")
             elif res.risk_level == "MEDIUM":
-                console.print(f"[bold yellow]NexSen >[/bold yellow] This wallet displays elevated topological or mixing anomalies. Proceed with extreme caution.")
+                console.print(f"[bold yellow]NexChain >[/bold yellow] This wallet displays elevated topological or mixing anomalies. Proceed with extreme caution.")
             else:
-                console.print(f"[bold green]NexSen >[/bold green] No prior scam reports found for this wallet in the offline database. Basic transaction hygiene applies.")
+                console.print(f"[bold green]NexChain >[/bold green] No prior scam reports found for this wallet in the offline database. Basic transaction hygiene applies.")
 
         elif intent == "show_reports":
             if not address:
-                console.print("[bold cyan]NexSen >[/bold cyan] Which wallet address do you want to see reports for?")
+                console.print("[bold cyan]NexChain >[/bold cyan] Which wallet address do you want to see reports for?")
                 continue
-            console.print(f"[bold cyan]NexSen >[/bold cyan] Fetching verified community incident reports for [yellow]{address}[/yellow]...")
+            console.print(f"[bold cyan]NexChain >[/bold cyan] Fetching verified community incident reports for [yellow]{address}[/yellow]...")
             cmd_reports(address)
             reports = get_reports_for_address(address)
             if reports:
-                console.print(f"[bold cyan]NexSen >[/bold cyan] Found {len(reports)} incident reports on record. You can ask me to [bold yellow]'graph bana'[/bold yellow] to see fund flow hops.")
+                console.print(f"[bold cyan]NexChain >[/bold cyan] Found {len(reports)} incident reports on record. You can ask me to [bold yellow]'graph bana'[/bold yellow] to see fund flow hops.")
 
         elif intent == "generate_graph":
             if not address:
-                console.print("[bold cyan]NexSen >[/bold cyan] Which wallet should I build the flow graph for?")
+                console.print("[bold cyan]NexChain >[/bold cyan] Which wallet should I build the flow graph for?")
                 continue
-            console.print(f"[bold cyan]NexSen >[/bold cyan] Building multi-hop transaction link analysis for [yellow]{address}[/yellow]...")
+            console.print(f"[bold cyan]NexChain >[/bold cyan] Building multi-hop transaction link analysis for [yellow]{address}[/yellow]...")
             cmd_graph(address)
 
         elif intent == "list_flagged":
-            console.print("[bold cyan]NexSen >[/bold cyan] Retrieving all currently indexed high-risk threat entities...")
+            console.print("[bold cyan]NexChain >[/bold cyan] Retrieving all currently indexed high-risk threat entities...")
             cmd_flagged()
 
         elif intent == "show_cases":
-            console.print("[bold cyan]NexSen >[/bold cyan] Opening active case files...")
+            console.print("[bold cyan]NexChain >[/bold cyan] Opening active case files...")
             cmd_cases()
 
         elif intent == "sync_intel":
             cmd_sync()
 
         elif intent == "greeting":
-            console.print("[bold cyan]NexSen >[/bold cyan] Hello! I am NexSen, your offline cryptocurrency forensics analyst. Send me any Bitcoin, TRON, or Ethereum address to scan, or ask me to check a P2P wallet.")
+            console.print("[bold cyan]NexChain >[/bold cyan] Hello! I am NexChain, your offline cryptocurrency forensics analyst. Send me any Bitcoin, TRON, or Ethereum address to scan, or ask me to check a P2P wallet.")
 
         else:
             # Fallback general query: use local LLM if available or conversational reply
             if llm_active:
-                sys_prompt = "You are NexSen, an offline crypto crime forensic assistant. Be concise, defensive, direct, and explain clearly."
+                sys_prompt = "You are NexChain, an offline crypto crime forensic assistant. Be concise, defensive, direct, and explain clearly."
                 reply = query_local_llm(user_input, system_prompt=sys_prompt)
                 if reply:
-                    console.print(f"[bold cyan]NexSen >[/bold cyan] {reply}")
+                    console.print(f"[bold cyan]NexChain >[/bold cyan] {reply}")
                 else:
-                    console.print("[bold cyan]NexSen >[/bold cyan] I can scan cryptocurrency addresses, inspect community scam reports, generate transaction flow graphs, or list active cases. Paste a wallet address to begin.")
+                    console.print("[bold cyan]NexChain >[/bold cyan] I can scan cryptocurrency addresses, inspect community scam reports, generate transaction flow graphs, or list active cases. Paste a wallet address to begin.")
             else:
-                console.print("[bold cyan]NexSen >[/bold cyan] Paste any wallet address (TRON, Bitcoin, Ethereum) and I will immediately scan it for fraud and laundering indicators.")
+                console.print("[bold cyan]NexChain >[/bold cyan] Paste any wallet address (TRON, Bitcoin, Ethereum) and I will immediately scan it for fraud and laundering indicators.")
 
         console.print()
+
