@@ -6,7 +6,7 @@
 
 set -e
 
-REPO_URL="https://github.com/norkfocneth/NexSen.cli.git"
+REPO_URL="https://github.com/norkfocneth/NexChain.cli.git"
 INSTALL_DIR="$HOME/.nexchain"
 BIN_DIR=""
 
@@ -79,3 +79,4 @@ echo "  ? NexChain AI CLI Installed Successfully!"
 echo "  ?? Run 'nexchain' from ANY terminal to start!"
 echo "========================================================"
 echo ""
+

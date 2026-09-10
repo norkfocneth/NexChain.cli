@@ -1,4 +1,4 @@
-# 🛡️ NexChain AI CLI — Offline Cryptocurrency Forensics & Threat Intelligence
+﻿# 🛡️ NexChain AI CLI — Offline Cryptocurrency Forensics & Threat Intelligence
 
 **Problem Statement ID:** `SIH26146` | **Organization:** National Technical Research Organisation (NTRO)  
 **Theme:** Blockchain & Cybersecurity | **Team:** NextGeneration  
@@ -12,12 +12,12 @@ Koi bhi user kisi bhi terminal me sirf **1 command** paste karke install kar sak
 
 ### 📱 Linux & Android Termux (1-Liner):
 ```bash
-curl -sSL https://raw.githubusercontent.com/norkfocneth/NexSen.cli/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/norkfocneth/NexChain.cli/main/install.sh | bash
 ```
 
 ### 💻 Windows PowerShell (1-Liner):
 ```powershell
-irm https://raw.githubusercontent.com/norkfocneth/NexSen.cli/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/norkfocneth/NexChain.cli/main/install.ps1 | iex
 ```
 
 *Installation complete hone ke baad, kisi bhi folder se bas `nexchain` type karein!*
@@ -29,8 +29,8 @@ irm https://raw.githubusercontent.com/norkfocneth/NexSen.cli/main/install.ps1 | 
 Agar aap repo manually clone karke run karna chahte hain:
 
 ```bash
-git clone https://github.com/norkfocneth/NexSen.cli.git
-cd NexSen.cli
+git clone https://github.com/norkfocneth/NexChain.cli.git
+cd NexChain.cli
 ```
 
 * **Linux / Termux:** `./install.sh`
@@ -101,3 +101,4 @@ NexChain > Building multi-hop transaction link analysis for TX9a8vR2bQ8YwM4kF1nP
 ## 🔒 100% Air-Gapped & Sovereign Architecture
 * Sabhi forensic lookups local air-gapped SQLite storage (`data/sentinel.db`) par hote hain.
 * Zero cloud leaks: Investigation queries kabhi bhi local machine ke bahar nahi jaate.
+

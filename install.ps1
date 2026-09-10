@@ -4,7 +4,7 @@
 # ========================================================
 
 $ErrorActionPreference = "Stop"
-$repoUrl = "https://github.com/norkfocneth/NexSen.cli.git"
+$repoUrl = "https://github.com/norkfocneth/NexChain.cli.git"
 $installDir = Join-Path $HOME ".nexchain"
 $binDir = Join-Path $HOME ".local\bin"
 
@@ -105,3 +105,4 @@ Write-Host "  ? NexChain AI CLI Installed Successfully!" -ForegroundColor Green
 Write-Host "  ?? Run 'nexchain' from ANY terminal to start!" -ForegroundColor White
 Write-Host "========================================================" -ForegroundColor Green
 Write-Host ""
+
