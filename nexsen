@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# NexSen CLI Launcher for Linux & Termux
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -d "$SCRIPT_DIR/.venv" ]; then
+    "$SCRIPT_DIR/.venv/bin/python" "$SCRIPT_DIR/nexsen.py" "$@"
+else
+    python3 "$SCRIPT_DIR/nexsen.py" "$@"
+fi
