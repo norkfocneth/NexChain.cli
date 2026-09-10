@@ -46,6 +46,14 @@ class IntentRouter:
             self.last_address = extracted_addr
 
         # Step 2: Deterministic Fast Rule Matching (Zero latency & 100% reliable)
+        # Bulk Scan Request
+        if any(w in lower_text for w in ["bulk", "csv", "audit", "batch", "dump", "file scan"]):
+            return {
+                "intent": "scan_bulk",
+                "address": None,
+                "confidence": 0.95,
+                "needs_address": False
+            }
         # A. Graph Request
         if any(w in lower_text for w in ["graph", "flow", "chart", "map", "topology", "link"]):
             self.last_intent = "generate_graph"

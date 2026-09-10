@@ -84,3 +84,18 @@ def cmd_report(address: str, chain: str, category: str, description: str, amount
     add_wallet_report(address, chain, category, description, amount_lost)
     console.print(f"[bold green]✓ Community report registered for {address}.[/bold green]")
     console.print(f"[dim]Risk score updated. Entity flagged in local database.[/dim]\n")
+
+
+def cmd_scan_bulk(file_path: Optional[str] = None) -> None:
+    """Executes bulk forensic audit on a CSV transaction dump file."""
+    from sentinel.core.bulk_scanner import audit_transactions_csv, DEFAULT_CSV_PATH
+    from sentinel.ui.terminal import render_bulk_audit_result
+    
+    target = Path(file_path) if file_path else DEFAULT_CSV_PATH
+    if not target.is_file():
+        console.print(f"[bold red]Error: CSV file not found at {target}[/bold red]")
+        console.print("[dim]You can generate or specify a file: nexchain scan-bulk <path-to-file.csv>[/dim]")
+        return
+
+    result = audit_transactions_csv(csv_file=target)
+    render_bulk_audit_result(result)

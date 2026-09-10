@@ -94,11 +94,15 @@ NexChain > Building multi-hop transaction link analysis for TX9a8vR2bQ8YwM4kF1nP
 | **Search Threat Registry** | `nexchain search Binance` |
 | **Investigation Case Files** | `nexchain cases` |
 | **Threat Feed Sync** | `nexchain sync` |
-| **Submit Incident Report** | `nexchain report <addr> -d "Fake SMS P2P fraud"` |
+| **NTRO Bulk Audit (CSV)** | 
+exchain scan-bulk [file.csv] |
+| **Submit Incident Report** | 
+exchain report <addr> -d "Fake SMS P2P fraud" |
 
 ---
 
 ## 🔒 100% Air-Gapped & Sovereign Architecture
 * Sabhi forensic lookups local air-gapped SQLite storage (`data/sentinel.db`) par hote hain.
 * Zero cloud leaks: Investigation queries kabhi bhi local machine ke bahar nahi jaate.
+
 

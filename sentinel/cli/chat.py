@@ -15,7 +15,8 @@ from sentinel.cli.commands import (
     cmd_graph,
     cmd_flagged,
     cmd_cases,
-    cmd_sync
+    cmd_sync,
+    cmd_scan_bulk
 )
 from sentinel.core.scanner import scan_wallet
 from sentinel.intelligence.database import get_reports_for_address
@@ -104,6 +105,9 @@ def start_chat_session():
             console.print("[bold cyan]NexChain >[/bold cyan] Opening active case files...")
             cmd_cases()
 
+        elif intent == "scan_bulk":
+            console.print("[bold cyan]NexChain >[/bold cyan] Initiating NTRO bulk forensic audit on transaction batch...")
+            cmd_scan_bulk()
         elif intent == "sync_intel":
             cmd_sync()
 
@@ -123,4 +127,3 @@ def start_chat_session():
                 console.print("[bold cyan]NexChain >[/bold cyan] Paste any wallet address (TRON, Bitcoin, Ethereum) and I will immediately scan it for fraud and laundering indicators.")
 
         console.print()
-

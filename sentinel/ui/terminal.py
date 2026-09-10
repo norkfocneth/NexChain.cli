@@ -115,27 +115,30 @@ def render_reports_table(address: str, reports: List[Dict[str, Any]]):
 
 
 def render_threat_list(threats: List[Dict[str, Any]]):
-    console.print("\n[bold cyan]INDEXED THREAT & FRAUD REGISTRY[/bold cyan]")
-    table = Table(box=box.ROUNDED, border_style="cyan")
-    table.add_column("Chain", style="cyan", width=9)
-    table.add_column("Address", style="bold white", width=34)
-    table.add_column("Status", style="yellow", width=18)
-    table.add_column("Score", style="bold red", width=6)
-    table.add_column("Reports", style="bold", width=8)
-    table.add_column("Category / Label", style="dim white")
+    console.print(f"\n[bold cyan]THREAT REGISTRY SEARCH RESULTS ({len(threats)} matches)[/bold cyan]")
+    console.print("[dim cyan]────────────────────────────────────────────────────────────────────────[/dim cyan]")
 
-    for t in threats:
-        status_style = "red" if "SCAM" in t["status"] or t["risk_score"] >= 80 else ("green" if "CLEAN" in t["status"] else "yellow")
-        table.add_row(
-            t["chain"],
-            t["address"][:32] + "...",
-            f"[{status_style}]{t['status']}[/{status_style}]",
-            str(t["risk_score"]),
-            str(t["report_count"]),
-            f"{t['category']} ({t.get('label', '')})"
+    for idx, t in enumerate(threats, 1):
+        status_col = "bold red" if t.get("risk_score", 0) >= 80 else "bold yellow"
+        reason = t.get("evidence_summary") or t.get("label") or "Reported fraudulent entity"
+        
+        card_content = (
+            f"[bold white]Network:[/bold white]   [bold yellow]{t['chain']}[/bold yellow]    "
+            f"[bold white]Risk Score:[/bold white] [{status_col}]{t['risk_score']} / 100[/{status_col}]    "
+            f"[bold white]Reports:[/bold white] {t.get('report_count', 0)}\n"
+            f"[bold white]Category:[/bold white]  [bold red]{t['category']}[/bold red]\n"
+            f"[bold white]Address:[/bold white]   [bold underline yellow]{t['address']}[/bold underline yellow]\n"
+            f"[bold white]Reason / Modus Operandi:[/bold white]\n"
+            f"[bright_white]  └─ {reason}[/bright_white]"
         )
-    console.print(table)
-
+        console.print(Panel(
+            card_content,
+            title=f"[bold cyan]Threat #{idx} // {t['category']}[/bold cyan]",
+            border_style="red" if t.get("risk_score", 0) >= 80 else "yellow",
+            box=box.ROUNDED,
+            padding=(0, 2)
+        ))
+    console.print()
 
 def render_cases_list(cases: List[Dict[str, Any]]):
     console.print("\n[bold cyan]ACTIVE LAW ENFORCEMENT INVESTIGATION CASES[/bold cyan]")
@@ -154,3 +157,44 @@ def render_cases_list(cases: List[Dict[str, Any]]):
         )
     console.print(table)
 
+
+
+def render_bulk_audit_result(data: Dict[str, Any]):
+    console.print("\n" + "=" * 75)
+    console.print("  [bold cyan]NEXCHAIN BULK FORENSIC AUDIT — NTRO BATCH INSPECTION[/bold cyan]")
+    console.print("=" * 75)
+    console.print(f"[bold white]Target Dump File:[/bold white]     [bold yellow]{data['csv_path']}[/bold yellow]")
+    console.print(f"[bold white]Total Transactions:[/bold white]   [bold]{data['total_transactions']:,}[/bold] lines analyzed")
+    console.print(f"[bold white]Unique Wallets:[/bold white]       [bold]{data['unique_wallets_count']:,}[/bold] unique entities")
+    
+    clean_pct = (data['clean_count'] / max(1, data['unique_wallets_count'])) * 100
+    flag_pct = (data['flagged_count'] / max(1, data['unique_wallets_count'])) * 100
+    
+    console.print(f"[bold green]├── ✓ Clean / Unflagged:[/bold green]   {data['clean_count']} ({clean_pct:.1f}%)")
+    console.print(f"[bold red]└── 🚨 Flagged Threats:[/bold red]    {data['flagged_count']} ({flag_pct:.1f}%)\n")
+
+    if not data["flagged_wallets"]:
+        console.print(Panel("[bold green]✓ ZERO THREAT ENTITIES DETECTED IN BATCH DUMP[/bold green]\nAll scanned wallets matched clean baseline patterns.", border_style="green"))
+        return
+
+    console.print("[bold red]FLAGGED THREAT ENTITIES & DETAILED MODUS OPERANDI (REASONS):[/bold red]\n")
+    for idx, item in enumerate(data["flagged_wallets"], 1):
+        summary = (
+            f"[bold white]Suspect Address:[/bold white]  [bold underline yellow]{item['address']}[/bold underline yellow]\n"
+            f"[bold white]Network / Chain:[/bold white]  [bold cyan]{item['chain']}[/bold cyan]    "
+            f"[bold white]Risk Score:[/bold white]      [bold red]{item['risk_score']} / 100[/bold red]\n"
+            f"[bold white]Threat Category:[/bold white]  [bold red]{item['category']}[/bold red]\n"
+            f"[bold white]Dump Activity:[/bold white]    [bold yellow]{item['tx_count']} suspicious transactions detected[/bold yellow] "
+            f"([white]Volume: {item['total_volume']:,.2f} {item.get('symbol', 'USDT')}[/white])\n"
+            f"[bold white]Exact Scam Reason & Modus Operandi:[/bold white]\n"
+            f"[bright_white]  └─ {item['reason']}[/bright_white]"
+        )
+        console.print(Panel(
+            summary,
+            title=f"[bold red]SUSPECT #{idx} // {item['category']}[/bold red]",
+            border_style="red",
+            box=box.ROUNDED,
+            padding=(0, 2)
+        ))
+
+    console.print(f"\n[bold green]✓ Detailed forensic audit exported to:[/bold green] [bold underline cyan]{data['output_report']}[/bold underline cyan]\n")

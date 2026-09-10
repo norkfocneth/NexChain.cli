@@ -280,7 +280,7 @@ def search_threats(query: str) -> List[Dict[str, Any]]:
     cursor = conn.cursor()
     term = f"%{query.strip()}%"
     cursor.execute("""
-    SELECT address, chain, category, status, risk_score, report_count, label
+    SELECT address, chain, category, status, risk_score, report_count, label, evidence_summary
     FROM wallets
     WHERE address LIKE ? OR category LIKE ? OR label LIKE ? OR evidence_summary LIKE ?
     LIMIT 20
@@ -293,7 +293,7 @@ def search_threats(query: str) -> List[Dict[str, Any]]:
 def list_all_flagged() -> List[Dict[str, Any]]:
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT address, chain, category, status, risk_score, report_count, label FROM wallets ORDER BY risk_score DESC")
+    cursor.execute("SELECT address, chain, category, status, risk_score, report_count, label, evidence_summary FROM wallets ORDER BY risk_score DESC")
     rows = cursor.fetchall()
     conn.close()
     return [dict(r) for r in rows]

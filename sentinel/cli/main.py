@@ -9,6 +9,7 @@ from typing import Optional
 from sentinel.intelligence.database import init_db
 from sentinel.cli.commands import (
     cmd_scan,
+    cmd_scan_bulk,
     cmd_reports,
     cmd_graph,
     cmd_search,
@@ -49,12 +50,22 @@ def scan(
     cmd_scan(address)
 
 
+
+
+@app.command("scan-bulk")
+def scan_bulk(
+    file: Optional[str] = typer.Argument(None, help="Path to CSV transaction dump (defaults to data/sample_transactions.csv)")
+):
+    """Perform NTRO-style bulk forensic audit on a CSV transaction dump file."""
+    cmd_scan_bulk(file)
+
+
 @app.command("reports")
 def reports(
     address: str = typer.Argument(..., help="Cryptocurrency address to query reports for")
 ):
     """Display community incident reports and verified fraud evidence."""
-    cmd_reports(address)
+    cmd_report, cmd_scan_bulks(address)
 
 
 @app.command("graph")
@@ -101,7 +112,7 @@ def report(
     """Submit a community scam report to the local threat database."""
     from sentinel.blockchain import detect_network
     chain = detect_network(address)
-    cmd_report(address, chain, category, description, amount)
+    cmd_report, cmd_scan_bulk(address, chain, category, description, amount)
 
 
 
