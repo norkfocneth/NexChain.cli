@@ -30,7 +30,6 @@ elif [ -w "/usr/local/bin" ]; then
 else
     mkdir -p "$HOME/.local/bin"
     BIN_DIR="$HOME/.local/bin"
-    # Suggest adding to PATH if missing
     if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
         echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
         echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.zshrc" 2>/dev/null || true
@@ -73,10 +72,48 @@ chmod +x "$WRAPPER"
 # Also symlink 'nexsen' alias
 ln -sf "$WRAPPER" "$BIN_DIR/nexsen" 2>/dev/null || true
 
+# Interactive AI Brain Model Prompt
+echo ""
+echo "========================================================"
+echo "  ?? Optional AI Brain Model Setup"
+echo "========================================================"
+echo "NexChain CLI includes an optional local AI Brain Model"
+echo "(Qwen2.5-0.5B, ~397MB) for conversational natural reasoning."
+echo ""
+
+INSTALL_AI="n"
+if [ -t 0 ]; then
+    read -r -p "Do you want to install the AI Brain Model for a better experience? [y/N]: " INSTALL_AI
+elif [ -e /dev/tty ]; then
+    read -r -p "Do you want to install the AI Brain Model for a better experience? [y/N]: " INSTALL_AI < /dev/tty
+fi
+
+if [[ "$INSTALL_AI" =~ ^[Yy]$ ]]; then
+    echo "[*] Checking for Ollama..."
+    if ! command -v ollama &> /dev/null; then
+        echo "[*] Installing Ollama..."
+        if [ -n "$PREFIX" ]; then
+            echo "[!] In Termux: run 'pkg install ollama' or use Python fallback."
+        else
+            curl -fsSL https://ollama.com/install.sh | sh || true
+        fi
+    fi
+    if command -v ollama &> /dev/null; then
+        echo "[*] Downloading Qwen2.5-0.5B (~397MB)..."
+        ollama pull qwen2.5:0.5b
+        echo "[?] Local AI Brain Model installed & ready!"
+    else
+        echo "[!] Ollama not found. You can install it later with: nexchain setup-ai"
+    fi
+else
+    echo "[-] Skipping AI Brain Model download."
+    echo "    NexChain will operate in 100% offline deterministic rule-based mode."
+    echo "    (You can install the AI model later anytime by typing: nexchain setup-ai)"
+fi
+
 echo ""
 echo "========================================================"
 echo "  ? NexChain AI CLI Installed Successfully!"
 echo "  ?? Run 'nexchain' from ANY terminal to start!"
 echo "========================================================"
 echo ""
-

@@ -104,10 +104,34 @@ def report(
     cmd_report(address, chain, category, description, amount)
 
 
+
+@app.command("setup-ai")
+def setup_ai():
+    """Download and configure the local offline AI Brain Model (Qwen 0.5B)."""
+    import subprocess
+    import shutil
+    from rich.console import Console
+    c = Console()
+    c.print("\n[bold cyan]NEXCHAIN LOCAL AI BRAIN SETUP[/bold cyan]")
+    c.print("[dim]Checking for Ollama local inference engine...[/dim]")
+    
+    if not shutil.which("ollama"):
+        c.print("[bold yellow]Ollama not found on system PATH.[/bold yellow]")
+        c.print("Please install Ollama from [underline cyan]https://ollama.com[/underline cyan] and re-run this command.")
+        return
+    
+    c.print("[bold green]✓ Ollama detected.[/bold green] Downloading [bold yellow]qwen2.5:0.5b[/bold yellow] (~397MB)...")
+    try:
+        subprocess.run(["ollama", "pull", "qwen2.5:0.5b"], check=True)
+        c.print("\n[bold green]✓ AI Brain Model successfully installed and active for NexChain![/bold green]\n")
+    except Exception as e:
+        c.print(f"[bold red]Download failed: {e}[/bold red]")
+
 def run_cli():
     app()
 
 
 if __name__ == "__main__":
     run_cli()
+
 
