@@ -7,6 +7,7 @@ $ErrorActionPreference = "Stop"
 $repoUrl = "https://github.com/norkfocneth/NexChain.cli.git"
 $installDir = Join-Path $HOME ".nexchain"
 $binDir = Join-Path $HOME ".local\bin"
+$ggufUrl = "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q4_k_m.gguf"
 
 Write-Host ""
 Write-Host "========================================================" -ForegroundColor Cyan
@@ -32,6 +33,11 @@ if ($scriptDir -and (Test-Path "$scriptDir\nexchain.py")) {
         if (Test-Path $installDir) { Remove-Item -Recurse -Force $installDir }
         git clone --depth 1 $repoUrl $installDir
     }
+}
+
+$modelsDir = Join-Path $installDir "models"
+if (-not (Test-Path $modelsDir)) {
+    New-Item -ItemType Directory -Path $modelsDir -Force | Out-Null
 }
 
 # Setup venv & dependencies
@@ -105,27 +111,27 @@ Write-Host "========================================================" -Foregroun
 Write-Host "  ?? Optional AI Brain Model Setup" -ForegroundColor White
 Write-Host "========================================================" -ForegroundColor Cyan
 Write-Host "NexChain CLI includes an optional local AI Brain Model" -ForegroundColor Gray
-Write-Host "(Qwen2.5-0.5B, ~397MB) for conversational natural reasoning." -ForegroundColor Gray
+Write-Host "(Qwen2.5-0.5B GGUF, ~468MB) for natural conversational reasoning." -ForegroundColor Gray
 Write-Host ""
 
 $installAI = Read-Host "Do you want to install the AI Brain Model for a better experience? [y/N]"
 if ($installAI -match "^[Yy]") {
-    Write-Host "[*] Checking for Ollama..." -ForegroundColor Yellow
-    if (-not (Get-Command ollama -ErrorAction SilentlyContinue)) {
-        Write-Host "[*] Attempting to install Ollama via winget..." -ForegroundColor Yellow
-        try {
-            winget install Ollama.Ollama --accept-source-agreements --accept-package-agreements
-        } catch {
-            Write-Host "[!] Could not auto-install Ollama. Please download from https://ollama.com" -ForegroundColor Yellow
-        }
-    }
-    if (Get-Command ollama -ErrorAction SilentlyContinue) {
-        Write-Host "[*] Downloading Qwen2.5:0.5B model (~397MB)..." -ForegroundColor Yellow
-        ollama pull qwen2.5:0.5b
-        Write-Host "[?] Local AI Brain Model installed & ready!" -ForegroundColor Green
+    $targetGguf = Join-Path $modelsDir "qwen2.5-0.5b.gguf"
+    Write-Host "[*] Downloading AI Brain Model directly from HuggingFace..." -ForegroundColor Yellow
+    Write-Host "[*] Target: $targetGguf" -ForegroundColor Gray
+    
+    if (Get-Command curl.exe -ErrorAction SilentlyContinue) {
+        & curl.exe -L --progress-bar $ggufUrl -o $targetGguf
     } else {
-        Write-Host "[!] Note: You can install the AI model later anytime with: nexchain setup-ai" -ForegroundColor Yellow
+        Start-BitsTransfer -Source $ggufUrl -Destination $targetGguf -Description "Downloading NexChain AI Model"
     }
+    
+    # If Ollama is present, also pull to Ollama
+    if (Get-Command ollama -ErrorAction SilentlyContinue) {
+        try { ollama pull qwen2.5:0.5b } catch {}
+    }
+    
+    Write-Host "[?] Local AI Brain Model installed & ready!" -ForegroundColor Green
 } else {
     Write-Host "[-] Skipping AI Brain Model download." -ForegroundColor Gray
     Write-Host "    NexChain will operate in 100% offline deterministic rule-based mode." -ForegroundColor Gray

@@ -9,6 +9,7 @@ set -e
 REPO_URL="https://github.com/norkfocneth/NexChain.cli.git"
 INSTALL_DIR="$HOME/.nexchain"
 BIN_DIR=""
+GGUF_URL="https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q4_k_m.gguf"
 
 echo ""
 echo "========================================================"
@@ -19,9 +20,9 @@ echo "========================================================"
 if [ -n "$PREFIX" ] && [ -d "$PREFIX/bin" ]; then
     BIN_DIR="$PREFIX/bin"
     echo "[*] Detected Android Termux environment..."
-    if ! command -v python3 &> /dev/null || ! command -v git &> /dev/null; then
-        echo "[*] Installing Python & Git in Termux..."
-        pkg update -y && pkg install -y python git
+    if ! command -v python3 &> /dev/null || ! command -v git &> /dev/null || ! command -v curl &> /dev/null; then
+        echo "[*] Installing Python, Git & Curl in Termux..."
+        pkg update -y && pkg install -y python git curl
     fi
 elif [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" == *":$HOME/.local/bin:"* ]]; then
     BIN_DIR="$HOME/.local/bin"
@@ -47,6 +48,7 @@ else
 fi
 
 cd "$INSTALL_DIR"
+mkdir -p "$INSTALL_DIR/models"
 
 # Virtual environment & dependencies
 echo "[*] Setting up Python dependencies (rich, typer, httpx)..."
@@ -78,7 +80,7 @@ echo "========================================================"
 echo "  ?? Optional AI Brain Model Setup"
 echo "========================================================"
 echo "NexChain CLI includes an optional local AI Brain Model"
-echo "(Qwen2.5-0.5B, ~397MB) for conversational natural reasoning."
+echo "(Qwen2.5-0.5B GGUF, ~468MB) for natural conversational reasoning."
 echo ""
 
 INSTALL_AI="n"
@@ -89,21 +91,26 @@ elif [ -e /dev/tty ]; then
 fi
 
 if [[ "$INSTALL_AI" =~ ^[Yy]$ ]]; then
-    echo "[*] Checking for Ollama..."
-    if ! command -v ollama &> /dev/null; then
-        echo "[*] Installing Ollama..."
+    MODEL_FILE="$INSTALL_DIR/models/qwen2.5-0.5b.gguf"
+    echo ""
+    echo "[*] Downloading AI Brain Model directly from HuggingFace..."
+    echo "[*] Target: $MODEL_FILE"
+    
+    if curl -L --progress-bar "$GGUF_URL" -o "$MODEL_FILE"; then
+        echo "[?] AI Brain Model downloaded successfully!"
+        
+        # Optional engine helper
         if [ -n "$PREFIX" ]; then
-            echo "[!] In Termux: run 'pkg install ollama' or use Python fallback."
+            echo "[*] Configuring Termux inference support..."
+            pkg install -y llama.cpp 2>/dev/null || true
         else
-            curl -fsSL https://ollama.com/install.sh | sh || true
+            if [ -f "$INSTALL_DIR/.venv/bin/pip" ]; then
+                "$INSTALL_DIR/.venv/bin/pip" install --quiet llama-cpp-python 2>/dev/null || true
+            fi
         fi
-    fi
-    if command -v ollama &> /dev/null; then
-        echo "[*] Downloading Qwen2.5-0.5B (~397MB)..."
-        ollama pull qwen2.5:0.5b
-        echo "[?] Local AI Brain Model installed & ready!"
+        echo "[?] AI Brain Model is configured and ready!"
     else
-        echo "[!] Ollama not found. You can install it later with: nexchain setup-ai"
+        echo "[!] Download failed. You can re-try later anytime using: nexchain setup-ai"
     fi
 else
     echo "[-] Skipping AI Brain Model download."

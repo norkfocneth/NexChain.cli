@@ -107,18 +107,23 @@ def report(
 
 @app.command("setup-ai")
 def setup_ai():
-    """Download and configure the local offline AI Brain Model (Qwen 0.5B)."""
-    import subprocess
-    import shutil
+    """Download and configure the local offline AI Brain Model (Qwen 0.5B GGUF) directly."""
     from rich.console import Console
+    from sentinel.ai.llm import download_gguf_model, get_local_gguf_path
     c = Console()
     c.print("\n[bold cyan]NEXCHAIN LOCAL AI BRAIN SETUP[/bold cyan]")
-    c.print("[dim]Checking for Ollama local inference engine...[/dim]")
     
-    if not shutil.which("ollama"):
-        c.print("[bold yellow]Ollama not found on system PATH.[/bold yellow]")
-        c.print("Please install Ollama from [underline cyan]https://ollama.com[/underline cyan] and re-run this command.")
+    existing = get_local_gguf_path()
+    if existing:
+        c.print(f"[bold green]✓ AI Brain Model is already installed at:[/bold green] {existing}")
         return
+
+    c.print("[bold yellow]Downloading Qwen2.5-0.5B GGUF directly from HuggingFace (~468MB)...[/bold yellow]")
+    success = download_gguf_model()
+    if success:
+        c.print("[bold green]✓ AI Brain Model successfully downloaded and active for NexChain![/bold green]\n")
+    else:
+        c.print("[bold red]Failed to download model. Please check your internet connection.[/bold red]\n")
     
     c.print("[bold green]✓ Ollama detected.[/bold green] Downloading [bold yellow]qwen2.5:0.5b[/bold yellow] (~397MB)...")
     try:
@@ -133,5 +138,6 @@ def run_cli():
 
 if __name__ == "__main__":
     run_cli()
+
 
 
