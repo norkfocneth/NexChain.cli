@@ -108,6 +108,7 @@ def report(
 @app.command("setup-ai")
 def setup_ai():
     """Download and configure the local offline AI Brain Model (Qwen 0.5B GGUF) directly."""
+    import shutil
     from rich.console import Console
     from sentinel.ai.llm import download_gguf_model, get_local_gguf_path
     c = Console()
@@ -119,18 +120,16 @@ def setup_ai():
         return
 
     c.print("[bold yellow]Downloading Qwen2.5-0.5B GGUF directly from HuggingFace (~468MB)...[/bold yellow]")
+    c.print("[dim]No Ollama needed! Standalone offline AI model.[/dim]\n")
     success = download_gguf_model()
     if success:
-        c.print("[bold green]✓ AI Brain Model successfully downloaded and active for NexChain![/bold green]\n")
+        c.print("\n[bold green]✓ AI Brain Model successfully downloaded and active for NexChain![/bold green]")
+        if shutil.which("llama-cli") or shutil.which("llama"):
+            c.print("[bold green]✓ Native llama.cpp hardware acceleration detected.[/bold green]\n")
+        else:
+            c.print("[dim]Tip: On Android Termux, run 'pkg install llama.cpp' for fast mobile CPU acceleration.[/dim]\n")
     else:
         c.print("[bold red]Failed to download model. Please check your internet connection.[/bold red]\n")
-    
-    c.print("[bold green]✓ Ollama detected.[/bold green] Downloading [bold yellow]qwen2.5:0.5b[/bold yellow] (~397MB)...")
-    try:
-        subprocess.run(["ollama", "pull", "qwen2.5:0.5b"], check=True)
-        c.print("\n[bold green]✓ AI Brain Model successfully installed and active for NexChain![/bold green]\n")
-    except Exception as e:
-        c.print(f"[bold red]Download failed: {e}[/bold red]")
 
 def run_cli():
     app()

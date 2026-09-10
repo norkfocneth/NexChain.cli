@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ========================================================
-# NexChain AI CLI ? Universal 1-Line Installer
+# NexChain AI CLI — Universal 1-Line Installer
 # Supported: Android Termux, Linux, macOS
 # ========================================================
 
@@ -13,7 +13,7 @@ GGUF_URL="https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qw
 
 echo ""
 echo "========================================================"
-echo "  NexChain AI CLI ? Universal 1-Line Installer"
+echo "  NexChain AI CLI — Universal 1-Line Installer"
 echo "========================================================"
 
 # Detect Termux vs standard Linux/macOS
@@ -74,42 +74,60 @@ chmod +x "$WRAPPER"
 # Also symlink 'nexsen' alias
 ln -sf "$WRAPPER" "$BIN_DIR/nexsen" 2>/dev/null || true
 
-# Interactive AI Brain Model Prompt
-echo ""
-echo "========================================================"
-echo "  ?? Optional AI Brain Model Setup"
-echo "========================================================"
-echo "NexChain CLI includes an optional local AI Brain Model"
-echo "(Qwen2.5-0.5B GGUF, ~468MB) for natural conversational reasoning."
-echo ""
+# Parse flags or env for automated AI install
+INSTALL_AI=""
+for arg in "$@"; do
+    case "$arg" in
+        --with-ai|-y|--ai) INSTALL_AI="y" ;;
+    esac
+done
 
-INSTALL_AI="n"
-if [ -t 0 ]; then
-    read -r -p "Do you want to install the AI Brain Model for a better experience? [y/N]: " INSTALL_AI
-elif [ -e /dev/tty ]; then
-    read -r -p "Do you want to install the AI Brain Model for a better experience? [y/N]: " INSTALL_AI < /dev/tty
+if [ -n "$AI" ] || [ -n "$WITH_AI" ]; then
+    INSTALL_AI="y"
+fi
+
+if [ -z "$INSTALL_AI" ]; then
+    echo ""
+    echo "========================================================"
+    echo "  🧠 Optional AI Brain Model Setup"
+    echo "========================================================"
+    echo "NexChain CLI includes an optional local AI Brain Model"
+    echo "(Qwen2.5-0.5B GGUF, ~468MB) for natural conversational reasoning."
+    echo "NO Ollama needed! Directly runs offline on your device."
+    echo ""
+
+    if [ -t 0 ]; then
+        read -r -p "Do you want to install the AI Brain Model for a better experience? [y/N]: " INSTALL_AI
+    elif [ -e /dev/tty ]; then
+        read -r -p "Do you want to install the AI Brain Model for a better experience? [y/N]: " INSTALL_AI < /dev/tty
+    else
+        INSTALL_AI="n"
+    fi
 fi
 
 if [[ "$INSTALL_AI" =~ ^[Yy]$ ]]; then
     MODEL_FILE="$INSTALL_DIR/models/qwen2.5-0.5b.gguf"
+    TMP_FILE="$INSTALL_DIR/models/qwen2.5-0.5b.gguf.tmp"
     echo ""
     echo "[*] Downloading AI Brain Model directly from HuggingFace..."
     echo "[*] Target: $MODEL_FILE"
     
-    if curl -L --progress-bar "$GGUF_URL" -o "$MODEL_FILE"; then
-        echo "[?] AI Brain Model downloaded successfully!"
+    if curl -L --progress-bar "$GGUF_URL" -o "$TMP_FILE"; then
+        mv "$TMP_FILE" "$MODEL_FILE"
+        echo "[✓] AI Brain Model downloaded successfully!"
         
         # Optional engine helper
         if [ -n "$PREFIX" ]; then
-            echo "[*] Configuring Termux inference support..."
+            echo "[*] Installing llama.cpp in Termux for native mobile acceleration..."
             pkg install -y llama.cpp 2>/dev/null || true
         else
             if [ -f "$INSTALL_DIR/.venv/bin/pip" ]; then
                 "$INSTALL_DIR/.venv/bin/pip" install --quiet llama-cpp-python 2>/dev/null || true
             fi
         fi
-        echo "[?] AI Brain Model is configured and ready!"
+        echo "[✓] AI Brain Model is configured and ready!"
     else
+        rm -f "$TMP_FILE"
         echo "[!] Download failed. You can re-try later anytime using: nexchain setup-ai"
     fi
 else
@@ -120,7 +138,7 @@ fi
 
 echo ""
 echo "========================================================"
-echo "  ? NexChain AI CLI Installed Successfully!"
-echo "  ?? Run 'nexchain' from ANY terminal to start!"
+echo "  ✓ NexChain AI CLI Installed Successfully!"
+echo "  👉 Run 'nexchain' from ANY terminal to start!"
 echo "========================================================"
 echo ""

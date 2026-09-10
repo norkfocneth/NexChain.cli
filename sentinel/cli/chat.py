@@ -8,7 +8,7 @@ from rich.prompt import Prompt
 from rich.panel import Panel
 from sentinel.ui.terminal import console, print_banner
 from sentinel.ai.intent import IntentRouter
-from sentinel.ai.llm import is_ollama_running, get_available_model, query_local_llm
+from sentinel.ai.llm import get_available_model, query_local_llm
 from sentinel.cli.commands import (
     cmd_scan,
     cmd_reports,
@@ -23,8 +23,8 @@ from sentinel.intelligence.database import get_reports_for_address
 
 def start_chat_session():
     """Launches the interactive conversational forensic assistant."""
-    llm_active = is_ollama_running()
-    model_name = get_available_model() if llm_active else "None (Deterministic Engine)"
+    model_name = get_available_model()
+    llm_active = model_name is not None
     mode_str = f"LOCAL AIR-GAPPED [AI: {model_name or 'Rule-Based'}]"
     
     print_banner(mode=mode_str)

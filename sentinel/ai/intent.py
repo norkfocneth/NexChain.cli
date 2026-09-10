@@ -8,7 +8,7 @@ import re
 import json
 from typing import Dict, Any, Optional, Tuple
 from sentinel.blockchain import detect_network
-from sentinel.ai.llm import query_local_llm, is_ollama_running
+from sentinel.ai.llm import query_local_llm, get_available_model
 
 
 # Regular expressions for crypto addresses
@@ -119,7 +119,7 @@ class IntentRouter:
             }
 
         # Step 3: Optional Local LLM router fallback for complex colloquial phrasing
-        if is_ollama_running():
+        if get_available_model():
             llm_result = self._route_with_llm(text, target_address)
             if llm_result:
                 return llm_result

@@ -56,7 +56,7 @@ def get_available_model() -> Optional[str]:
     """Returns active model identifier (GGUF or Ollama)."""
     gguf = get_local_gguf_path()
     if gguf:
-        return f"Qwen2.5-0.5B (Direct GGUF: {gguf.name})"
+        return f"Qwen2.5-0.5B (Offline Brain Active)"
 
     if is_ollama_running():
         try:
@@ -107,7 +107,8 @@ def query_gguf_direct(prompt: str, system_prompt: str = "") -> Optional[str]:
         pass
 
     # Strategy 2: llama-cli / llama.cpp binary (commonly installed in Termux / Linux)
-    cli_bin = shutil.which("llama-cli") or shutil.which("llama-completion") or shutil.which("llama")
+    termux_bin = Path("/data/data/com.termux/files/usr/bin/llama-cli")
+    cli_bin = shutil.which("llama-cli") or shutil.which("llama-completion") or shutil.which("llama") or (str(termux_bin) if termux_bin.is_file() else None)
     if cli_bin:
         try:
             cmd = [
@@ -162,12 +163,10 @@ def query_local_llm(prompt: str, system_prompt: str = "", temperature: float = 0
 
 def download_gguf_model(target_dir: Optional[Path] = None) -> bool:
     """Streams and downloads Qwen2.5-0.5B GGUF with real-time progress bar."""
-    import urllib.request
-    from rich.progress import Progress, BarColumn, DownloadColumn, TransferSpeedColumn, TimeRemainingColumn
-
     dest_dir = target_dir or (Path.home() / ".nexchain" / "models")
     dest_dir.mkdir(parents=True, exist_ok=True)
     dest_file = dest_dir / GGUF_MODEL_FILENAME
+    tmp_file = dest_dir / f"{GGUF_MODEL_FILENAME}.tmp"
 
     if dest_file.is_file() and dest_file.stat().st_size > 100_000_000:
         return True
@@ -176,28 +175,44 @@ def download_gguf_model(target_dir: Optional[Path] = None) -> bool:
     print(f"[*] Target location: {dest_file}\n")
 
     try:
-        with httpx.stream("GET", GGUF_MODEL_URL, follow_redirects=True, timeout=30.0) as response:
+        with httpx.stream("GET", GGUF_MODEL_URL, follow_redirects=True, timeout=60.0) as response:
             if response.status_code != 200:
                 print(f"[!] HTTP Error: {response.status_code}")
                 return False
             
             total = int(response.headers.get("content-length", 491400032))
             
-            from rich.progress import Progress
-            with Progress() as progress:
+            from rich.progress import Progress, BarColumn, DownloadColumn, TransferSpeedColumn, TimeRemainingColumn
+            with Progress(
+                "[progress.description]{task.description}",
+                BarColumn(),
+                DownloadColumn(),
+                TransferSpeedColumn(),
+                TimeRemainingColumn(),
+            ) as progress:
                 task = progress.add_task("[cyan]Downloading AI Brain Model...", total=total)
-                with open(dest_file, "wb") as f:
-                    for chunk in response.iter_bytes(chunk_size=65536):
+                with open(tmp_file, "wb") as f:
+                    for chunk in response.iter_bytes(chunk_size=131072):
                         f.write(chunk)
                         progress.update(task, advance=len(chunk))
         
-        print("\n[✓] Download complete!")
-        return True
+        if tmp_file.is_file() and tmp_file.stat().st_size > 100_000_000:
+            if dest_file.exists():
+                dest_file.unlink()
+            tmp_file.rename(dest_file)
+            print("\n[✓] Download complete! AI Brain is active.")
+            return True
+        return False
     except Exception as e:
-        print(f"[!] Direct download error: {e}")
+        print(f"[!] Direct stream error: {e}")
         # Fallback to standard curl
         try:
-            subprocess.run(["curl", "-L", "--progress-bar", GGUF_MODEL_URL, "-o", str(dest_file)], check=True)
-            return True
+            subprocess.run(["curl", "-L", "--progress-bar", GGUF_MODEL_URL, "-o", str(tmp_file)], check=True)
+            if tmp_file.is_file() and tmp_file.stat().st_size > 100_000_000:
+                if dest_file.exists():
+                    dest_file.unlink()
+                tmp_file.rename(dest_file)
+                return True
         except Exception:
-            return False
+            pass
+        return False
