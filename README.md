@@ -1,4 +1,4 @@
-﻿# 🛡️ NexChain CLI — Offline Cryptocurrency Forensics & Threat Intelligence
+# 🛡️ NexChain AI CLI — Offline Cryptocurrency Forensics & Threat Intelligence
 
 **Problem Statement ID:** `SIH26146` | **Organization:** National Technical Research Organisation (NTRO)  
 **Theme:** Blockchain & Cybersecurity | **Team:** NextGeneration  
@@ -6,37 +6,53 @@
 
 ---
 
-## ⚡ Overview
+## ⚡ 1-Line Instant Installation
 
-**NexChain CLI** is an air-gapped, privacy-first cryptocurrency investigation terminal application. It allows investigators, cybercrime cells, and P2P crypto traders to investigate suspicious wallets, unmask laundering syndicates (Peeling Chains, Mixers), inspect verified fraud reports, and generate transaction link-analysis flow graphs — **completely offline without external API dependencies**.
+Koi bhi user kisi bhi terminal me sirf **1 command** paste karke install kar sakta hai:
 
-### Key Architectural Pillars
-1. **Deterministic Core:** The actual risk engine, graph link analysis, and threat database run on deterministic, auditable Python code (`SQLite` + `Network Topology` + `Multi-Chain Address Validators`).
-2. **Natural Language Interface (LLM Intent Router):** Supports natural conversational investigation in English & Hinglish, routing user requests to deterministic tools.
-3. **Local & Lightweight:** Powered by local models (`Qwen2.5-0.5B` via Ollama) with 100% offline rule-based fallback if no LLM is running.
-4. **Air-Gapped & Sovereign:** Zero classified intelligence queries are ever transmitted outside the local machine.
+### 📱 Linux & Android Termux (1-Liner):
+```bash
+curl -sSL https://raw.githubusercontent.com/norkfocneth/NexSen.cli/main/install.sh | bash
+```
+
+### 💻 Windows PowerShell (1-Liner):
+```powershell
+irm https://raw.githubusercontent.com/norkfocneth/NexSen.cli/main/install.ps1 | iex
+```
+
+*Installation complete hone ke baad, kisi bhi folder se bas `nexchain` type karein!*
 
 ---
 
-## 🚀 Quick Start
+## 📂 Manual Clone & Run (Alternative)
 
-### 1. Interactive Conversational Mode (Default)
-Launch the interactive natural language assistant:
-```powershell
-.\NexChain.bat
-# or
-.venv\Scripts\python.exe NexChain.py
+Agar aap repo manually clone karke run karna chahte hain:
+
+```bash
+git clone https://github.com/norkfocneth/NexSen.cli.git
+cd NexSen.cli
+```
+
+* **Linux / Termux:** `./install.sh`
+* **Windows:** `.\install.bat` (ya `.\nexchain.bat`)
+
+---
+
+## 🚀 Usage & Commands
+
+### 1. Interactive Natural Language Assistant (Default)
+Terminal me bas type karein:
+```bash
+nexchain
 ```
 
 #### Example Conversation:
 ```text
-Sentinel > Hey! What do you want to investigate today?
-You      > Mujhe ek wallet mila hai P2P transaction ke liye, check karke batao scammer wallet toh nahi hai.
-Sentinel > Sure! Send me the cryptocurrency wallet address you want to inspect.
-You      > TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x
-Sentinel > Scanning wallet TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x across local threat registry...
+NexChain > Hey! What do you want to investigate today?
+You      > bhai ye wallet P2P scammer toh nahi hai: TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x
+NexChain > Scanning wallet TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x across local threat registry...
 
-CHΛINSENTINEL FORENSIC SCAN
+NEXCHAIN FORENSIC SCAN
 ─────────────────────────────────────────────────────────────
 Network:    TRON
 Address:    TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x
@@ -59,66 +75,29 @@ Risk Signals & Forensic Indicators
 └─────────────────────────────────────────────────────────────────────────────┘
 
 You      > Why? Kya complaints hain ispe?
-Sentinel > Fetching verified community incident reports for TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x...
-[Displays detailed incident table]
+NexChain > Fetching verified community incident reports for TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x...
 
 You      > Graph bhi bana ke dikhao
-Sentinel > Building multi-hop transaction link analysis for TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x...
-[Displays multi-hop fund flow diagram]
+NexChain > Building multi-hop transaction link analysis for TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x...
 ```
 
 ---
 
 ## 🛠️ Direct CLI Commands
 
-For power users, scripting, or automated forensics:
-
-| Command | Description | Example |
-| :--- | :--- | :--- |
-| `scan <wallet>` | Comprehensive threat & risk audit of an address | `.\NexChain.bat scan TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x` |
-| `reports <wallet>` | Display verified community incident reports & evidence | `.\NexChain.bat reports TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x` |
-| `graph <wallet>` | Generate link-analysis multi-hop flow diagram | `.\NexChain.bat graph TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x` |
-| `flagged` | List all indexed high-risk threat entities in database | `.\NexChain.bat flagged` |
-| `search <query>` | Search threat database by keyword, label, or address | `.\NexChain.bat search Binance` |
-| `cases` | View active law enforcement investigation cases | `.\NexChain.bat cases` |
-| `sync` | Synchronize offline threat intelligence feeds | `.\NexChain.bat sync` |
-| `report <addr>` | Submit a new community scam report into local database | `.\NexChain.bat report TXYZ... -d "Fake SMS P2P fraud"` |
+| Action | Command |
+| :--- | :--- |
+| **Wallet Risk Scan** | `nexchain scan <address>` |
+| **Incident Reports** | `nexchain reports <address>` |
+| **Link-Analysis Flow Graph** | `nexchain graph <address>` |
+| **List Flagged Scammers** | `nexchain flagged` |
+| **Search Threat Registry** | `nexchain search Binance` |
+| **Investigation Case Files** | `nexchain cases` |
+| **Threat Feed Sync** | `nexchain sync` |
+| **Submit Incident Report** | `nexchain report <addr> -d "Fake SMS P2P fraud"` |
 
 ---
 
-## 📂 Project Architecture
-
-```
-NexChain/
-├── sentinel/
-│   ├── cli/
-│   │   ├── main.py          # Typer CLI & command registration
-│   │   ├── commands.py      # Core CLI command handlers
-│   │   └── chat.py          # Conversational chat loop with session state
-│   ├── core/
-│   │   ├── scanner.py       # Deterministic risk scoring & signal synthesis
-│   │   └── analyzer.py      # Topology & transaction heuristics
-│   ├── blockchain/
-│   │   └── __init__.py      # TRON, Bitcoin (SegWit/Legacy), Ethereum validators
-│   ├── intelligence/
-│   │   └── database.py      # Air-gapped SQLite threat intelligence database
-│   ├── graph/
-│   │   └── engine.py        # Multi-hop transaction flow & ASCII diagram generator
-│   ├── ai/
-│   │   ├── intent.py        # Natural language intent router & entity extractor
-│   │   └── llm.py           # Local Ollama / Qwen2.5-0.5B connector
-│   └── ui/
-│       └── terminal.py      # Rich cyberpunk terminal banners & risk matrices
-├── data/
-│   └── sentinel.db          # Local offline SQLite database
-├── tests/
-│   └── test_intent.py       # Automated conversational intent & session tests
-└── pyproject.toml           # Package configuration
-```
-
----
-
-## 🔒 Security & Privacy Notice
-* **100% Air-Gapped & Offline:** All lookups are performed against local SQLite storage and local LLM processes.
-* **No Cloud Leaks:** Zero search queries or suspect addresses leave your terminal.
-
+## 🔒 100% Air-Gapped & Sovereign Architecture
+* Sabhi forensic lookups local air-gapped SQLite storage (`data/sentinel.db`) par hote hain.
+* Zero cloud leaks: Investigation queries kabhi bhi local machine ke bahar nahi jaate.
