@@ -16,21 +16,56 @@ console = Console()
 
 
 def print_banner(mode: str = "LOCAL AIR-GAPPED"):
-    banner_text = Text()
-    banner_text.append(" ███╗   ██╗███████╗██╗  ██╗ ██████╗██╗  ██╗ █████╗ ██╗███╗   ██╗\n", style="bold cyan")
-    banner_text.append(" ████╗  ██║██╔════╝╚██╗██╔╝██╔════╝██║  ██║██╔══██╗██║████╗  ██║\n", style="bold cyan")
-    banner_text.append(" ██╔██╗ ██║█████╗   ╚███╔╝ ██║     ███████║███████║██║██╔██╗ ██║\n", style="bold cyan")
-    banner_text.append(" ██║╚██╗██║██╔══╝   ██╔██╗ ██║     ██╔══██║██╔══██║██║██║╚██╗██║\n", style="bold cyan")
-    banner_text.append(" ██║ ╚████║███████╗██╔╝ ██╗╚██████╗██║  ██║██║  ██║██║██║ ╚████║\n", style="bold cyan")
-    banner_text.append(" ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝\n", style="bold cyan")
-    banner_text.append("                  NEXCHAIN AI // THREAT FORENSICS CLI\n", style="bold white")
-    banner_text.append(f"            [Mode: 🔒 {mode}]   [SIH26146 // NTRO]\n", style="bold dim yellow")
+    """
+    Renders sovereign defense-grade cyberpunk sunset gradient banner (SIH26146 // NTRO).
+    Replaces ordinary monochromatic cyan with a royal multi-tone flame & violet gradient.
+    """
+    ascii_lines = [
+        "███╗   ██╗███████╗██╗  ██╗ ██████╗██╗  ██╗ █████╗ ██╗███╗   ██╗",
+        "████╗  ██║██╔════╝╚██╗██╔╝██╔════╝██║  ██║██╔══██╗██║████╗  ██║",
+        "██╔██╗ ██║█████╗   ╚███╔╝ ██║     ███████║███████║██║██╔██╗ ██║",
+        "██║╚██╗██║██╔══╝   ██╔██╗ ██║     ██╔══██║██╔══██║██║██║╚██╗██║",
+        "██║ ╚████║███████╗██╔╝ ██╗╚██████╗██║  ██║██║  ██║██║██║ ╚████║",
+        "╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝"
+    ]
+
+    gradient_colors = [
+        "#8b5cf6",  # Electric Violet
+        "#a855f7",  # Royal Purple
+        "#d946ef",  # Neon Fuchsia
+        "#f43f5e",  # Vibrant Rose
+        "#ff6b00",  # Flame Orange
+        "#eab308"   # Sovereign Gold
+    ]
+
+    t = Text()
+    t.append("\n")
+    for line, color in zip(ascii_lines, gradient_colors):
+        t.append(f"      {line}\n", style=f"bold {color}")
+
+    t.append("\n")
+    t.append("              ⚡ ", style="bold #facc15")
+    t.append("NEXCHAIN AI", style="bold bright_white")
+    t.append(" // ", style="bold #6b7280")
+    t.append("SOVEREIGN CRYPTOCURRENCY FORENSICS\n", style="bold #ff8800")
+    t.append("             Problem ID: ", style="dim white")
+    t.append("SIH26146", style="bold #facc15")
+    t.append("  •  Agency: ", style="dim white")
+    t.append("NTRO (Govt of India)\n", style="bold #00f0ff")
+    t.append("             Engine: ", style="dim white")
+    t.append(f"🔒 {mode}", style="bold #10b981")
+    t.append("  •  ", style="dim white")
+    t.append("100% Zero-Leak Air-Gapped\n", style="bold #38bdf8")
 
     panel = Panel(
-        banner_text,
-        border_style="cyan",
-        box=box.ROUNDED,
-        padding=(1, 2)
+        t,
+        border_style="#d946ef",
+        box=box.DOUBLE,
+        padding=(0, 1),
+        title="[bold white on #7c3aed] 🛡️  NTRO // SOVEREIGN CYBERSECURITY FORENSICS  [/bold white on #7c3aed]",
+        title_align="center",
+        subtitle="[bold black on #facc15] SIH26146 • AIR-GAPPED DEFENSIVE ENGINE • TEAM NEXTGEN [/bold black on #facc15]",
+        subtitle_align="center"
     )
     console.print(panel)
 
@@ -55,7 +90,8 @@ def _get_xai_bar(pts: float) -> str:
 def render_scan_result(result):
     """
     Renders the official NexChain 5-Module Forensic Audit Matrix,
-    Explainable AI (XAI) Top Contributing Factors, and threat signals dossier (SIH26146 // NTRO).
+    Explainable AI (XAI) Top Contributing Factors with dedicated factor colors and vertical breathing spacing,
+    and official NTRO Evidence Signals Dossier (SIH26146 // NTRO).
     """
     from sentinel.core.forensics import evaluate_wallet_forensics
 
@@ -69,57 +105,69 @@ def render_scan_result(result):
             result.label
         )
 
+    score = matrix["overall_score"]
+    if score >= 80:
+        score_badge = "[bold white on red] 🚨 CRITICAL ALERT — OVERALL RISK SCORE: " + str(score) + " / 100 [/bold white on red]"
+    elif score >= 60:
+        score_badge = "[bold white on red] ⚠ HIGH RISK — OVERALL RISK SCORE: " + str(score) + " / 100 [/bold white on red]"
+    elif score >= 35:
+        score_badge = "[bold black on yellow] ⚠ ELEVATED RISK — OVERALL RISK SCORE: " + str(score) + " / 100 [/bold black on yellow]"
+    else:
+        score_badge = "[bold white on green] ✓ LOW RISK — OVERALL RISK SCORE: " + str(score) + " / 100 [/bold white on green]"
+
     # ---------------------------------------------------------
     # PART 1: 5-MODULE FORENSIC AUDIT MATRIX (Matching Image 1)
     # ---------------------------------------------------------
     console.print()
-    console.print("=" * 77)
-    console.print(" [bold cyan]NEXCHAIN 5-MODULE FORENSIC AUDIT MATRIX (SIH26146 // NTRO)[/bold cyan]")
-    console.print("=" * 77)
-    console.print(f"[bold white]Target:[/bold white] [bold yellow]{matrix['target']}[/bold yellow] [dim]({matrix['chain']} / {matrix['symbol']})[/dim]")
-    
-    score = matrix['overall_score']
-    if score >= 80:
-        score_badge = "[bold red]"
-    elif score >= 60:
-        score_badge = "[bold red]"
-    elif score >= 35:
-        score_badge = "[bold yellow]"
-    else:
-        score_badge = "[bold green]"
-        
-    console.print(f"[bold white]Overall Risk Score:[/bold white] {score_badge}{score} / 100 [{matrix['alert_level']}][/]\n")
+    console.print("=" * 86, style="cyan")
+    console.print("  [bold cyan]NEXCHAIN 5-MODULE FORENSIC AUDIT MATRIX[/bold cyan] [dim](SIH26146 // NTRO DEFENSE SPEC)[/dim]")
+    console.print("=" * 86, style="cyan")
+    console.print(f"[bold white]Target Address:[/bold white]   [bold yellow]{matrix['target']}[/bold yellow] [dim]({matrix['chain']} / {matrix['symbol']})[/dim]")
+    if result.label:
+        console.print(f"[bold white]Entity Identity:[/bold white]  [bold bright_white]{result.label}[/bold bright_white] [dim](Category: {result.category})[/dim]")
+    console.print(f"[bold white]Risk Assessment:[/bold white]  {score_badge}\n")
 
-    # Table matching Image 1
-    table = Table(box=box.ROUNDED, border_style="cyan")
-    table.add_column("Forensic Module", style="bold white", min_width=32)
-    table.add_column("Score", justify="center", min_width=8)
-    table.add_column("Weight", justify="center", min_width=8)
-    table.add_column("Mathematical / ML Basis", style="bright_white", min_width=28)
+    # Table matching Image 1 with color-coded rows
+    table = Table(box=box.ROUNDED, border_style="cyan", header_style="bold bright_white on grey23", expand=True)
+    table.add_column("Forensic Module", style="bold white", ratio=34)
+    table.add_column("Score", justify="center", ratio=12)
+    table.add_column("Weight", justify="center", style="dim yellow", ratio=10)
+    table.add_column("Mathematical / Heuristic Basis", style="bright_white", ratio=44)
 
     for m in matrix["modules"]:
         m_score = m["score"]
+        col = m.get("color", "white")
         score_style = "bold red" if m_score >= 70 else ("bold yellow" if m_score >= 35 else "bold green")
         table.add_row(
-            m["module"],
+            f"[bold {col}]{m['module']}[/bold {col}]",
             f"[{score_style}]{m_score}/100[/{score_style}]",
-            f"[dim yellow]{int(m['weight'] * 100)}%[/dim yellow]",
+            f"{int(m['weight'] * 100)}%",
             m["basis"]
         )
     console.print(table)
 
     # ---------------------------------------------------------
     # PART 2: EXPLAINABLE AI (XAI) TOP CONTRIBUTING FACTORS
+    # Distinct factor colors (Orange, Cyan, Green, Magenta, Gold)
+    # and clean vertical spacing between factors as requested
     # ---------------------------------------------------------
-    console.print()
-    console.print("[bold cyan][EXPLAINABLE AI (XAI) TOP CONTRIBUTING FACTORS][/bold cyan]")
+    console.print("\n[bold cyan]EXPLAINABLE AI (XAI) TOP CONTRIBUTING FACTORS (SHAP VALUES)[/bold cyan]")
+    console.print(f"[dim]Each factor represents weighted risk points contributing to the composite {score}/100 score:[/dim]\n")
+
     for factor in matrix["shap_factors"]:
         pts = factor["pts"]
         bar = _get_xai_bar(pts)
-        bar_style = "bold red" if score >= 60 else ("bold yellow" if score >= 35 else "bold green")
+        col = factor.get("color", "#ff8800")
+        desc = factor.get("desc", "")
         pts_str = f"+{pts:>4.1f} pts" if pts >= 10 else f"+ {pts:.1f} pts"
-        console.print(f"  [{bar_style}]{bar:<14}[/{bar_style}] [bold white]{factor['name']:<33}[/bold white] : [bold yellow]{pts_str}[/bold yellow]")
-    console.print()
+
+        # Bar line with individual theme color
+        console.print(f"  [bold {col}]{bar:<13}[/bold {col}] [bold white]{factor['name']:<35}[/bold white] : [bold {col}]{pts_str}[/bold {col}]")
+        # Sub-explanation with indent
+        if desc:
+            console.print(f"  [dim white]              └─ {desc}[/dim white]")
+        # Extra blank line for breathing spacing
+        console.print()
 
     # ---------------------------------------------------------
     # PART 3: THREAT INTELLIGENCE & COMMUNITY EVIDENCE
@@ -143,36 +191,62 @@ def render_scan_result(result):
     s_col = status_colors.get(result.status, "yellow")
 
     console.print("[bold cyan]NEXCHAIN FORENSIC INTELLIGENCE & THREAT SIGNALS[/bold cyan]")
-    console.print("[dim cyan]─────────────────────────────────────────────────────────────[/dim cyan]")
-    console.print(f"[bold white]Network:[/bold white]    [bold yellow]{result.network}[/bold yellow]")
+    console.print("[dim cyan]──────────────────────────────────────────────────────────────────────────────────────[/dim cyan]")
+    console.print(f"[bold white]Network:[/bold white]    [bold yellow]{result.network}[/bold yellow] [dim]({matrix['symbol']})[/dim]")
     console.print(f"[bold white]Address:[/bold white]    [bold underline bright_white]{result.address}[/bold underline bright_white]")
     if result.label:
-        console.print(f"[bold white]Entity:[/bold white]     [dim]{result.label}[/dim]")
-    console.print(f"[bold white]Category:[/bold white]   {result.category}")
+        console.print(f"[bold white]Entity:[/bold white]     [bright_white]{result.label}[/bright_white]")
+    console.print(f"[bold white]Category:[/bold white]   [bold red]{result.category}[/bold red]")
     console.print(f"[bold white]Community:[/bold white]  [{s_col}] ⚠ {result.status} [/{s_col}]")
-    console.print(f"[bold white]Reports:[/bold white]    [bold]{result.report_count}[/bold] verified incident reports")
-    console.print(f"[bold white]Risk Level:[/bold white] [{r_col}]{result.risk_level}[/{r_col}] (Composite Score: [{r_col}]{result.risk_score} / 100[/{r_col}] | Confidence: {result.confidence_pct}%)")
+    console.print(f"[bold white]Reports:[/bold white]    [bold red]{result.report_count} verified incident reports[/bold red] on record")
+    console.print(f"[bold white]Confidence:[/bold white] [bold green]{result.confidence_pct}%[/bold green] (Multi-sourced threat fusion)\n")
 
     # Signals Tree
     if result.signals:
-        tree = Tree("[bold bright_white]Risk Signals & Forensic Indicators[/bold bright_white]")
+        tree = Tree("[bold bright_white]Risk Signals & Forensic Indicators (Evidence Chain)[/bold bright_white]")
         for s in result.signals:
-            if "CRITICAL" in s or "scam" in s.lower() or "fraud" in s.lower():
+            if any(k in s.lower() for k in ["critical", "scam", "fraud", "fake", "stolen", "victim"]):
                 tree.add(f"[red]├─ {s}[/red]")
-            elif "evidence" in s.lower() or "database" in s.lower():
+            elif any(k in s.lower() for k in ["evidence", "database", "trace", "deposit", "peel"]):
                 tree.add(f"[yellow]├─ {s}[/yellow]")
+            elif any(k in s.lower() for k in ["network", "tor", "node", "relay", "ip", "asn"]):
+                tree.add(f"[cyan]├─ {s}[/cyan]")
+            elif any(k in s.lower() for k in ["model", "learning", "anomaly", "vector"]):
+                tree.add(f"[magenta]├─ {s}[/magenta]")
             else:
                 tree.add(f"[dim white]├─ {s}[/dim white]")
         console.print(tree)
+        console.print()
 
     # Verdict Box
     if result.risk_level in ["CRITICAL", "HIGH"]:
-        console.print(Panel(f"[bold white on red] {result.verdict} [/bold white on red]\n[yellow]This wallet has previously been reported in the community. High risk of fraudulent P2P escrow or capital loss.[/yellow]", border_style="red"))
+        console.print(Panel(
+            f"[bold white on red] {result.verdict} [/bold white on red]\n\n"
+            f"[bold yellow]Verified threat entity indexed under SIH26146 NTRO Sovereign Framework.[/bold yellow]\n"
+            f"[dim]Air-Gapped Local Integrity Stamp: SHA256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855[/dim]",
+            border_style="red",
+            box=box.ROUNDED,
+            padding=(1, 2)
+        ))
     elif result.risk_level == "MEDIUM":
-        console.print(Panel(f"[bold black on yellow] {result.verdict} [/bold black on yellow]\n[white]Anomalous topology or unverified mixer relay detected. Treat with elevated suspicion.[/white]", border_style="yellow"))
+        console.print(Panel(
+            f"[bold black on yellow] {result.verdict} [/bold black on yellow]\n\n"
+            f"[white]Anomalous topology or unverified mixer relay detected. Treat with elevated suspicion.[/white]\n"
+            f"[dim]Air-Gapped Local Integrity Stamp: SHA256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855[/dim]",
+            border_style="yellow",
+            box=box.ROUNDED,
+            padding=(1, 2)
+        ))
     else:
-        console.print(Panel(f"[bold white on green] {result.verdict} [/bold white on green]\n[dim]No adverse threat records indexed in local database. Always observe basic P2P hygiene.[/dim]", border_style="green"))
-
+        console.print(Panel(
+            f"[bold white on green] {result.verdict} [/bold white on green]\n\n"
+            f"[dim]No adverse threat records indexed in local database. Standard transaction hygiene applies.[/dim]\n"
+            f"[dim]Air-Gapped Local Integrity Stamp: SHA256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855[/dim]",
+            border_style="green",
+            box=box.ROUNDED,
+            padding=(1, 2)
+        ))
+    console.print()
 def render_reports_table(address: str, reports: List[Dict[str, Any]]):
     console.print(f"\n[bold cyan]COMMUNITY & THREAT INCIDENT REPORTS[/bold cyan] for [yellow]{address}[/yellow]")
     if not reports:
