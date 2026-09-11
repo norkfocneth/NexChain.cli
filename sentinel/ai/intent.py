@@ -77,7 +77,8 @@ class IntentRouter:
         # C. Scan / Safety Check Request
         if extracted_addr or any(w in lower_text for w in [
             "scan", "check", "scammer", "safe", "fraud", "p2p", "investigate",
-            "bhai ye wallet", "surakshit", "fake", "kaisa hai", "verify", "is this"
+            "bhai ye wallet", "surakshit", "fake", "kaisa hai", "verify", "is this",
+            "inspect", "matrix", "shap", "xai", "forensic", "audit", "5 module"
         ]):
             self.last_intent = "wallet_scan"
             return {

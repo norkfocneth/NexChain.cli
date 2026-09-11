@@ -104,32 +104,7 @@ def cmd_scan_bulk(file_path: Optional[str] = None) -> None:
 
 def cmd_inspect(identifier: str) -> None:
     """Performs deep 5-module forensic inspection on a TXID or cryptocurrency address."""
-    from sentinel.core.forensics import evaluate_transaction_forensics
-    from sentinel.ui.terminal import render_inspection_dossier
-    from sentinel.intelligence.database import get_wallet
-    
-    clean_id = identifier.strip()
-    record = get_wallet(clean_id)
-    
-    # Synthesize transaction payload
-    tx_payload = {
-        "txid": clean_id if len(clean_id) > 40 else "tx_" + clean_id[:16],
-        "address": clean_id,
-        "chain": record.get("chain", "TRON") if record else "TRON",
-        "amount": "1,850.00",
-        "symbol": "USDT",
-        "fee_sat": 4800,
-        "vsize": 250,
-        "in_degree": 1,
-        "out_degree": 2,
-        "is_peeling": True if (record and record.get("risk_score", 0) >= 80) else False,
-        "category": record.get("category", "General Transfer") if record else "Standard P2P Transfer",
-        "ip_address": "185.220.101.5" if (record and record.get("risk_score", 0) >= 80) else "103.21.244.0",
-        "asn": "AS205100 (Tor Exit Relay Node)" if (record and record.get("risk_score", 0) >= 80) else "AS13335 (Direct Node Relay)"
-    }
-    
-    forensics = evaluate_transaction_forensics(tx_payload)
-    render_inspection_dossier(tx_payload, forensics)
+    cmd_scan(identifier)
 
 
 def cmd_alerts() -> None:

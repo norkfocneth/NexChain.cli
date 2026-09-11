@@ -1,3 +1,4 @@
+from sentinel.core.forensics import evaluate_wallet_forensics
 """
 ChainSentinel Core Scanner Engine
 Performs multi-chain deterministic threat scanning against local threat intelligence,
@@ -31,6 +32,7 @@ class ScanResult:
     evidence_summary: Optional[str] = None
     first_reported: Optional[str] = None
     last_reported: Optional[str] = None
+    forensics: Optional[Dict[str, Any]] = None
 
 
 def scan_wallet(address: str) -> ScanResult:
@@ -83,6 +85,14 @@ def scan_wallet(address: str) -> ScanResult:
 
         confidence = 85 if len(reports) >= 3 else (70 if len(reports) > 0 else 55)
 
+        forensics = evaluate_wallet_forensics(
+            clean_addr,
+            wallet_record.get("chain", network),
+            risk_score,
+            category,
+            label
+        )
+
         return ScanResult(
             address=clean_addr,
             network=wallet_record.get("chain", network),
@@ -98,7 +108,8 @@ def scan_wallet(address: str) -> ScanResult:
             reports=reports,
             evidence_summary=evidence_summary,
             first_reported=first_rep,
-            last_reported=last_rep
+            last_reported=last_rep,
+            forensics=forensics
         )
 
     else:
@@ -115,6 +126,14 @@ def scan_wallet(address: str) -> ScanResult:
             "Always verify payment receipt in your own bank app before releasing P2P crypto"
         ]
 
+        forensics = evaluate_wallet_forensics(
+            clean_addr,
+            network,
+            risk_score,
+            category,
+            label
+        )
+
         return ScanResult(
             address=clean_addr,
             network=network,
@@ -130,5 +149,6 @@ def scan_wallet(address: str) -> ScanResult:
             reports=[],
             evidence_summary="Zero adverse records in offline database.",
             first_reported=None,
-            last_reported=None
+            last_reported=None,
+            forensics=forensics
         )

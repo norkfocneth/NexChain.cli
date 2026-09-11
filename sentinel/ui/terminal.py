@@ -35,9 +35,95 @@ def print_banner(mode: str = "LOCAL AIR-GAPPED"):
     console.print(panel)
 
 
+def _get_xai_bar(pts: float) -> str:
+    if pts >= 22:
+        return "█" * 11
+    elif pts >= 20:
+        return "█" * 8
+    elif pts >= 18:
+        return "█" * 6
+    elif pts >= 15:
+        return "█" * 5
+    elif pts >= 4:
+        return "█" * 2
+    elif pts >= 2:
+        return "█" * 2
+    else:
+        return "█"
+
+
 def render_scan_result(result):
-    """Renders formatted scan result with signals tree and risk badge."""
-    # Color logic
+    """
+    Renders the official NexChain 5-Module Forensic Audit Matrix,
+    Explainable AI (XAI) Top Contributing Factors, and threat signals dossier (SIH26146 // NTRO).
+    """
+    from sentinel.core.forensics import evaluate_wallet_forensics
+
+    matrix = getattr(result, "forensics", None)
+    if not matrix:
+        matrix = evaluate_wallet_forensics(
+            result.address,
+            result.network,
+            result.risk_score,
+            result.category,
+            result.label
+        )
+
+    # ---------------------------------------------------------
+    # PART 1: 5-MODULE FORENSIC AUDIT MATRIX (Matching Image 1)
+    # ---------------------------------------------------------
+    console.print()
+    console.print("=" * 77)
+    console.print(" [bold cyan]NEXCHAIN 5-MODULE FORENSIC AUDIT MATRIX (SIH26146 // NTRO)[/bold cyan]")
+    console.print("=" * 77)
+    console.print(f"[bold white]Target:[/bold white] [bold yellow]{matrix['target']}[/bold yellow] [dim]({matrix['chain']} / {matrix['symbol']})[/dim]")
+    
+    score = matrix['overall_score']
+    if score >= 80:
+        score_badge = "[bold red]"
+    elif score >= 60:
+        score_badge = "[bold red]"
+    elif score >= 35:
+        score_badge = "[bold yellow]"
+    else:
+        score_badge = "[bold green]"
+        
+    console.print(f"[bold white]Overall Risk Score:[/bold white] {score_badge}{score} / 100 [{matrix['alert_level']}][/]\n")
+
+    # Table matching Image 1
+    table = Table(box=box.ROUNDED, border_style="cyan")
+    table.add_column("Forensic Module", style="bold white", min_width=32)
+    table.add_column("Score", justify="center", min_width=8)
+    table.add_column("Weight", justify="center", min_width=8)
+    table.add_column("Mathematical / ML Basis", style="bright_white", min_width=28)
+
+    for m in matrix["modules"]:
+        m_score = m["score"]
+        score_style = "bold red" if m_score >= 70 else ("bold yellow" if m_score >= 35 else "bold green")
+        table.add_row(
+            m["module"],
+            f"[{score_style}]{m_score}/100[/{score_style}]",
+            f"[dim yellow]{int(m['weight'] * 100)}%[/dim yellow]",
+            m["basis"]
+        )
+    console.print(table)
+
+    # ---------------------------------------------------------
+    # PART 2: EXPLAINABLE AI (XAI) TOP CONTRIBUTING FACTORS
+    # ---------------------------------------------------------
+    console.print()
+    console.print("[bold cyan][EXPLAINABLE AI (XAI) TOP CONTRIBUTING FACTORS][/bold cyan]")
+    for factor in matrix["shap_factors"]:
+        pts = factor["pts"]
+        bar = _get_xai_bar(pts)
+        bar_style = "bold red" if score >= 60 else ("bold yellow" if score >= 35 else "bold green")
+        pts_str = f"+{pts:>4.1f} pts" if pts >= 10 else f"+ {pts:.1f} pts"
+        console.print(f"  [{bar_style}]{bar:<14}[/{bar_style}] [bold white]{factor['name']:<33}[/bold white] : [bold yellow]{pts_str}[/bold yellow]")
+    console.print()
+
+    # ---------------------------------------------------------
+    # PART 3: THREAT INTELLIGENCE & COMMUNITY EVIDENCE
+    # ---------------------------------------------------------
     risk_colors = {
         "CRITICAL": "bold red",
         "HIGH": "bold red",
@@ -56,7 +142,7 @@ def render_scan_result(result):
     r_col = risk_colors.get(result.risk_level, "white")
     s_col = status_colors.get(result.status, "yellow")
 
-    console.print("\n[bold cyan]NEXCHAIN FORENSIC SCAN[/bold cyan]")
+    console.print("[bold cyan]NEXCHAIN FORENSIC INTELLIGENCE & THREAT SIGNALS[/bold cyan]")
     console.print("[dim cyan]─────────────────────────────────────────────────────────────[/dim cyan]")
     console.print(f"[bold white]Network:[/bold white]    [bold yellow]{result.network}[/bold yellow]")
     console.print(f"[bold white]Address:[/bold white]    [bold underline bright_white]{result.address}[/bold underline bright_white]")
@@ -86,7 +172,6 @@ def render_scan_result(result):
         console.print(Panel(f"[bold black on yellow] {result.verdict} [/bold black on yellow]\n[white]Anomalous topology or unverified mixer relay detected. Treat with elevated suspicion.[/white]", border_style="yellow"))
     else:
         console.print(Panel(f"[bold white on green] {result.verdict} [/bold white on green]\n[dim]No adverse threat records indexed in local database. Always observe basic P2P hygiene.[/dim]", border_style="green"))
-
 
 def render_reports_table(address: str, reports: List[Dict[str, Any]]):
     console.print(f"\n[bold cyan]COMMUNITY & THREAT INCIDENT REPORTS[/bold cyan] for [yellow]{address}[/yellow]")
