@@ -18,7 +18,7 @@ console = Console()
 def print_banner(mode: str = "LOCAL AIR-GAPPED"):
     """
     Renders sovereign defense-grade cyberpunk sunset gradient banner (SIH26146 // NTRO).
-    Replaces ordinary monochromatic cyan with a royal multi-tone flame & violet gradient.
+    Restores the royal multi-tone flame & violet gradient with glowing purple borders and badges.
     """
     ascii_lines = [
         "███╗   ██╗███████╗██╗  ██╗ ██████╗██╗  ██╗ █████╗ ██╗███╗   ██╗",
