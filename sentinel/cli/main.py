@@ -10,6 +10,9 @@ from sentinel.intelligence.database import init_db
 from sentinel.cli.commands import (
     cmd_scan,
     cmd_scan_bulk,
+    cmd_inspect,
+    cmd_alerts,
+    cmd_dossier,
     cmd_reports,
     cmd_graph,
     cmd_search,
@@ -65,7 +68,10 @@ def reports(
     address: str = typer.Argument(..., help="Cryptocurrency address to query reports for")
 ):
     """Display community incident reports and verified fraud evidence."""
-    cmd_report, cmd_scan_bulks(address)
+    cmd_report,
+    cmd_inspect,
+    cmd_alerts,
+    cmd_dossier, cmd_scan_bulks(address)
 
 
 @app.command("graph")
@@ -90,6 +96,30 @@ def flagged():
     cmd_flagged()
 
 
+
+
+@app.command("inspect")
+def inspect(
+    identifier: str = typer.Argument(..., help="Transaction TXID or wallet address to inspect with 5-module forensic engine")
+):
+    """Deep 5-module forensic inspection on a transaction or wallet with XAI SHAP waterfall."""
+    cmd_inspect(identifier)
+
+
+@app.command("alerts")
+def alerts():
+    """Display real-time priority alerts feed for critical threat entities."""
+    cmd_alerts()
+
+
+@app.command("dossier")
+def dossier(
+    case_id: Optional[str] = typer.Argument(None, help="Case ID to generate official dossier for (defaults to active case)")
+):
+    """Generate official NTRO Law Enforcement Case Dossier for court/police submission."""
+    cmd_dossier(case_id)
+
+
 @app.command("cases")
 def cases():
     """Display active law enforcement case dossiers."""
@@ -112,7 +142,10 @@ def report(
     """Submit a community scam report to the local threat database."""
     from sentinel.blockchain import detect_network
     chain = detect_network(address)
-    cmd_report, cmd_scan_bulk(address, chain, category, description, amount)
+    cmd_report,
+    cmd_inspect,
+    cmd_alerts,
+    cmd_dossier, cmd_scan_bulk(address, chain, category, description, amount)
 
 
 

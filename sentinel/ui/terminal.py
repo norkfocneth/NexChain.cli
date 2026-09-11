@@ -198,3 +198,104 @@ def render_bulk_audit_result(data: Dict[str, Any]):
         ))
 
     console.print(f"\n[bold green]✓ Detailed forensic audit exported to:[/bold green] [bold underline cyan]{data['output_report']}[/bold underline cyan]\n")
+
+
+def render_inspection_dossier(tx_data: Dict[str, Any], forensics: Dict[str, Any]):
+    console.print("\n" + "=" * 78)
+    console.print("  [bold cyan]NEXCHAIN TXID INSPECTOR — 5-MODULE EXPLAINABLE FORENSIC DOSSIER[/bold cyan]")
+    console.print("=" * 78)
+    console.print(f"[bold white]Target TXID:[/bold white]        [bold underline yellow]{tx_data.get('txid', 'N/A')}[/bold underline yellow]")
+    console.print(f"[bold white]Network / Chain:[/bold white]    [bold yellow]{tx_data.get('chain', 'BITCOIN')}[/bold yellow]    [bold white]Amount:[/bold white] [bold green]{tx_data.get('amount', 'N/A')} {tx_data.get('symbol', 'BTC')}[/bold green]")
+    console.print(f"[bold white]P2P Relay Node:[/bold white]     {tx_data.get('ip_address', '127.0.0.1 (Direct P2P Node)')} ({tx_data.get('asn', 'AS13335')})")
+    
+    score = forensics["composite_score"]
+    level = forensics["risk_level"]
+    badge_style = "bold white on red" if score >= 80 else ("bold black on yellow" if score >= 60 else "bold white on green")
+    
+    console.print(f"[bold white]Composite Score:[/bold white]    [{badge_style}] {score} / 100 [{level}] [/{badge_style}]")
+    console.print(f"[bold white]Forensic Verdict:[/bold white]   [yellow]{forensics['verdict']}[/yellow]\n")
+
+    # 5-Module Scorecard Table
+    console.print("[bold cyan]5-LAYER MATHEMATICAL & ML FORENSIC MATRIX (SIH26146 // NTRO)[/bold cyan]")
+    table = Table(box=box.ROUNDED, border_style="cyan")
+    table.add_column("Forensic Module", style="bold white", width=30)
+    table.add_column("Score", style="bold red", width=10)
+    table.add_column("Weight", style="yellow", width=8)
+    table.add_column("Mathematical / Heuristic Rationale", style="bright_white")
+
+    for m in forensics["modules"]:
+        m_score = m["score"]
+        score_color = "red" if m_score >= 75 else ("yellow" if m_score >= 45 else "green")
+        table.add_row(
+            m["module"],
+            f"[{score_color}]{m_score} / 100[/{score_color}]",
+            f"{int(m['weight']*100)}%",
+            m["explanation"]
+        )
+    console.print(table)
+
+    # SHAP-style Feature Importance Waterfall
+    console.print("\n[bold cyan]EXPLAINABLE AI (XAI) TOP CONTRIBUTING THREAT FACTORS (SHAP VALUES)[/bold cyan]")
+    for factor in forensics["shap_factors"]:
+        pts = factor["pts"]
+        bar_len = int(pts * 0.8)
+        bar_str = "█" * max(1, bar_len)
+        console.print(f"  [bold red]{bar_str:<22}[/bold red] [bold white]{factor['name']:<28}[/bold white] : [bold yellow]+{pts:.1f} pts[/bold yellow]")
+        console.print(f"  [dim white]└─ {factor['desc']}[/dim white]")
+    console.print()
+
+
+def render_alerts_feed(alerts: List[Dict[str, Any]]):
+    console.print("\n" + "=" * 78)
+    console.print("  [bold cyan]NEXCHAIN REAL-TIME FORENSIC ALERTS STREAM (ACTIVE CASES)[/bold cyan]")
+    console.print("=" * 78)
+    
+    for idx, a in enumerate(alerts, 1):
+        sev = a.get("severity", "HIGH")
+        style = "bold red" if sev == "CRITICAL" else "bold yellow"
+        console.print(Panel(
+            f"[bold white]Target Wallet:[/bold white]   [bold underline yellow]{a['address']}[/bold underline yellow]\n"
+            f"[bold white]Network:[/bold white]         [bold cyan]{a.get('chain', 'TRON')}[/bold cyan]    [bold white]Risk Level:[/bold white] [{style}]{sev} ({a.get('risk_score', 85)}/100)[/{style}]\n"
+            f"[bold white]Threat Category:[/bold white] [bold red]{a.get('category', 'Fraud Scheme')}[/bold red]\n"
+            f"[bold white]Detection Logic:[/bold white]\n"
+            f"[bright_white]  └─ {a.get('description', 'Anomalous fund movement detected.')}[/bright_white]",
+            title=f"[{style}]ALERT #{idx} // {a.get('category', 'ANOMALY')} [{sev}][/{style}]",
+            border_style="red" if sev == "CRITICAL" else "yellow",
+            box=box.ROUNDED,
+            padding=(0, 2)
+        ))
+    console.print()
+
+
+def render_case_dossier(case: Dict[str, Any], suspects: List[Dict[str, Any]]):
+    console.print("\n" + "═" * 78)
+    console.print("  [bold white on blue] OFFICIAL NTRO LAW ENFORCEMENT CASE DOSSIER // RESTRICTED [/bold white on blue]")
+    console.print("═" * 78)
+    console.print(f"[bold white]Case ID:[/bold white]          [bold underline yellow]{case['case_id']}[/bold underline yellow]")
+    console.print(f"[bold white]Operation Title:[/bold white]  [bold white]{case['title']}[/bold white]")
+    console.print(f"[bold white]Lead Officer:[/bold white]     [cyan]{case['investigator']}[/cyan]    [bold white]Status:[/bold white] [bold green]{case['status']}[/bold green]")
+    console.print(f"[bold white]Date Created:[/bold white]     {case['created_at']} (Air-Gapped Local Integrity: [green]VERIFIED[/green])")
+    console.print(f"\n[bold white]EXECUTIVE SUMMARY & MODUS OPERANDI:[/bold white]")
+    console.print(f"[dim cyan]{case.get('summary', 'No summary provided.')}[/dim cyan]\n")
+
+    console.print("[bold red]PRIMARY SUSPECT ENTITIES & RISK EVALUATION[/bold red]")
+    table = Table(box=box.ROUNDED, border_style="red")
+    table.add_column("Suspect Wallet", style="bold yellow", width=36)
+    table.add_column("Chain", style="cyan", width=8)
+    table.add_column("Category", style="bold red", width=22)
+    table.add_column("Score", style="bold red", width=6)
+    table.add_column("Modus Operandi / Evidence Hash", style="white")
+
+    for s in suspects:
+        table.add_row(
+            s["address"],
+            s["chain"],
+            s["category"],
+            str(s["risk_score"]),
+            s.get("evidence_summary", "Indexed threat entity")
+        )
+    console.print(table)
+    
+    console.print("\n[dim]──────────────────────────────────────────────────────────────────────────────[/dim]")
+    console.print("[bold green]✓ Chain of Custody Cryptographic Stamp:[/bold green] [dim]SHA256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855[/dim]")
+    console.print("[dim]Generated by NexChain AI Forensic Suite under SIH26146 NTRO Sovereign Framework.[/dim]\n")

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transactions>
+  <transaction>
+    <timestamp>2026-09-10 10:14:02</timestamp>
+    <txid>4c3a1e9f8d7b6a2c3e1a8b9c0d1e2f3a</txid>
+    <chain>TRON</chain>
+    <to_address>TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x</to_address>
+    <amount>1850.00</amount>
+    <symbol>USDT</symbol>
+    <notes>P2P Disputed Order</notes>
+  </transaction>
+  <transaction>
+    <timestamp>2026-09-10 10:22:15</timestamp>
+    <txid>7b4e9a1f2c3d5e8a7b4e9a1f2c3d5e8a</txid>
+    <chain>TRON</chain>
+    <to_address>TWhb9gK2pL4vR8nM1sE5tH7jQ3yZ6dF0x</to_address>
+    <amount>2000.00</amount>
+    <symbol>USDT</symbol>
+    <notes>WhatsApp Review Recharge</notes>
+  </transaction>
+  <transaction>
+    <timestamp>2026-09-10 10:30:40</timestamp>
+    <txid>1a8f3d7c5e9b2a4c1a8f3d7c5e9b2a4c</txid>
+    <chain>TRON</chain>
+    <to_address>TND275dGv2kP3zX8qL9wM1sE5tH7jQ3yZ0</to_address>
+    <amount>500.00</amount>
+    <symbol>USDT</symbol>
+    <notes>Clean Merchant Settlement</notes>
+  </transaction>
+</transactions>

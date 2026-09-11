@@ -85,19 +85,20 @@ NexChain > Building multi-hop transaction link analysis for TX9a8vR2bQ8YwM4kF1nP
 
 ## 🛠️ Direct CLI Commands
 
-| Action | Command |
-| :--- | :--- |
-| **Wallet Risk Scan** | `nexchain scan <address>` |
-| **Incident Reports** | `nexchain reports <address>` |
-| **Link-Analysis Flow Graph** | `nexchain graph <address>` |
-| **List Flagged Scammers** | `nexchain flagged` |
-| **Search Threat Registry** | `nexchain search Binance` |
-| **Investigation Case Files** | `nexchain cases` |
-| **Threat Feed Sync** | `nexchain sync` |
-| **NTRO Bulk Audit (CSV)** | 
-exchain scan-bulk [file.csv] |
-| **Submit Incident Report** | 
-exchain report <addr> -d "Fake SMS P2P fraud" |
+| Action | Command | Description |
+| :--- | :--- | :--- |
+| **5-Module Forensic Inspector** | `nexchain inspect <txid/addr>` | Deep 5-module mathematical audit with XAI SHAP factor attribution. |
+| **NTRO Bulk Audit (CSV/XML/JSON)**| `nexchain scan-bulk [file]` | Batch scan up to 20,000+ tx dumps & auto-export forensic audit report. |
+| **Real-Time Threat Alerts** | `nexchain alerts` | Stream prioritized alerts (Peeling, CoinJoin, Tor relays, WhatsApp scams). |
+| **Official Case Dossier** | `nexchain dossier [case_id]` | Generate official NTRO Law Enforcement Case Dossier for court submission. |
+| **Wallet Risk Scan** | `nexchain scan <address>` | Scan wallet address for risk score, community flags & signals. |
+| **Link-Analysis Flow Graph** | `nexchain graph <address>` | Generate multi-hop entity transaction link analysis flow graph. |
+| **Search Threat Registry** | `nexchain search <term>` | Query threat DB by keyword (e.g., `whatsapp`, `telegram`, `p2p`). |
+| **Incident Reports** | `nexchain reports <address>` | Display verified community complaints & scam incident evidence. |
+| **List Flagged Threats** | `nexchain flagged` | View all indexed fraud entities sorted by risk score. |
+| **Investigation Cases** | `nexchain cases` | Browse active law enforcement case dossiers. |
+| **Threat Feed Sync** | `nexchain sync` | Synchronize offline threat intelligence & OSINT blacklist feeds. |
+| **Submit Incident Report** | `nexchain report <addr> -d "desc"`| Register a new community fraud report into local database. |
 
 ---
 

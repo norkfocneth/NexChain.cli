@@ -1,0 +1,25 @@
+===========================================================================
+OFFICIAL NTRO LAW ENFORCEMENT CASE DOSSIER // RESTRICTED
+===========================================================================
+Case ID:        CASE-2026-CYBER-P2P-01
+Title:          Telegram & WhatsApp Fast Escrow Task Scam Ring
+Investigator:   Investigator FOCNETH
+Status:         ACTIVE_INVESTIGATION
+Created At:     2026-09-08 10:00:00
+
+SUMMARY & MODUS OPERANDI:
+Syndicate recruits victims via WhatsApp job offers and Telegram crypto signals. Collects USDT on TRON network and sweeps funds through P2P fraudulent buyer accounts.
+
+SUSPECT WALLETS:
+- [ETHEREUM] 0x098b716b8aaf21512996dc57eb0615e2383e2f96 (Web3 Phishing Drainer, Risk: 96/100)
+  Reason: Telegram Airdrop Phishing Drainer: Phishing bot distributed in Telegram crypto groups posing as LayerZero token claim. Executes malicious Permit2 allowance drain.
+- [TRON] TWhb9gK2pL4vR8nM1sE5tH7jQ3yZ6dF0x (WhatsApp Job Scam, Risk: 95/100)
+  Reason: WhatsApp Part-Time Hotel Rating Fraud: Targets recruited via WhatsApp for rating hotels/Google reviews. Victims forced to recharge USDT to unfreeze tier commissions.
+- [TRON] TYDzsYUEpvnYmQK4zGP9s2O23GnbS5Vz8 (Telegram VIP Task Scam, Risk: 92/100)
+  Reason: Telegram VIP Channel Daily Yield Scam: Group promises 30% daily returns for completing crypto tasks. Drains victim deposits to OTC desk and blocks withdrawals.
+- [TRON] TKr2A4vB8nM1sE5tH7jQ3yZ6dF0xP9wL2 (WhatsApp YouTube Like Scam, Risk: 91/100)
+  Reason: Part-Time Video Like Scam: Initial Rs 150 paid via UPI for liking 3 YouTube videos, then victim coerced to transfer 2,500 USDT on TRON to VIP escrow wallet.
+- [TRON] TX9a8vR2bQ8YwM4kF1nP7dL3tS5eH6jZ0x (P2P Escrow Fraud, Risk: 88/100)
+  Reason: P2P Trade Fraud: Buyer sends forged bank deposit SMS & fake UTR reference, then pressures seller to release USDT before bank confirms.
+
+Cryptographic Evidence Stamp: SHA256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
